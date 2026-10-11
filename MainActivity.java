@@ -1,19 +1,24 @@
 package com.ahvaz.safetybook;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private WebView webView;
+    private TextToSpeech tts;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -23,6 +28,30 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        // راه‌اندازی TTS بومی اندروید
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    // تلاش برای زبان فارسی
+                    int result = tts.setLanguage(new Locale("fa", "IR"));
+                    if (result == TextToSpeech.LANG_MISSING_DATA ||
+                        result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        // اگر فارسی نبود، عربی (نزدیک‌تر)
+                        int r2 = tts.setLanguage(new Locale("ar"));
+                        if (r2 == TextToSpeech.LANG_MISSING_DATA ||
+                            r2 == TextToSpeech.LANG_NOT_SUPPORTED) {
+                            // در نهایت انگلیسی
+                            tts.setLanguage(Locale.US);
+                        }
+                    }
+                    tts.setSpeechRate(1.0f);
+                    tts.setPitch(1.0f);
+                }
+            }
+        });
+
         webView = findViewById(R.id.webView);
         WebSettings s = webView.getSettings();
         s.setJavaScriptEnabled(true);
@@ -40,7 +69,12 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient());
         webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
+        // اضافه کردن پل TTS برای جاوااسکریپت
+        webView.addJavascriptInterface(new TTSBridge(), "AndroidTTS");
+
         webView.loadUrl("file:///android_asset/index.html");
+
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -57,5 +91,49 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
+    }
+
+    // کلاس پل ارتباطی برای جاوااسکریپت
+    public class TTSBridge {
+        @JavascriptInterface
+        public void speak(String text) {
+            if (tts != null && text != null && !text.isEmpty()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "safety_book_utterance");
+                } else {
+                    tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+                }
+            }
+        }
+
+        @JavascriptInterface
+        public void stop() {
+            if (tts != null) tts.stop();
+        }
+
+        @JavascriptInterface
+        public void pause() {
+            // TextToSpeech بومی pause ندارد، اما می‌تونیم با stop شبیه‌سازی کنیم
+            if (tts != null) tts.stop();
+        }
+
+        @JavascriptInterface
+        public void setRate(float rate) {
+            if (tts != null) tts.setSpeechRate(rate);
+        }
+
+        @JavascriptInterface
+        public boolean isAvailable() {
+            return tts != null;
+        }
     }
 }
