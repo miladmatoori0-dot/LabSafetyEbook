@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -28,8 +27,6 @@ body{
   font-size:var(--font-size);line-height:1.9;transition:background .3s,color .3s;
   min-height:100vh;
 }
-
-/* نوار بالای ثابت */
 .topbar{
   position:fixed;top:0;left:0;right:0;height:56px;
   background:var(--nav-bg);color:var(--nav-text);
@@ -50,37 +47,19 @@ body{
 }
 .progress-bar{position:fixed;top:56px;left:0;right:0;height:3px;background:rgba(255,255,255,.1);z-index:99}
 .progress-fill{height:100%;background:var(--accent);width:0;transition:width .2s}
-
-/* محتوا */
 #app{padding:70px 16px 130px;max-width:700px;margin:0 auto}
 #content{animation:fade .3s ease}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-#content h1{
-  font-size:22px;color:var(--accent2);margin:20px 0 12px;
-  padding-bottom:10px;border-bottom:3px solid var(--accent);text-align:center;
-}
-#content h2{
-  font-size:19px;color:var(--accent2);margin:24px 0 10px;
-  padding:10px 14px;background:var(--card2);border-right:4px solid var(--accent);
-  border-radius:8px;
-}
-#content h3{
-  font-size:17px;color:var(--primary);margin:18px 0 8px;
-  padding-right:10px;border-right:3px solid var(--accent);
-}
+#content h1{font-size:22px;color:var(--accent2);margin:20px 0 12px;padding-bottom:10px;border-bottom:3px solid var(--accent);text-align:center}
+#content h2{font-size:19px;color:var(--accent2);margin:24px 0 10px;padding:10px 14px;background:var(--card2);border-right:4px solid var(--accent);border-radius:8px}
+#content h3{font-size:17px;color:var(--primary);margin:18px 0 8px;padding-right:10px;border-right:3px solid var(--accent)}
 #content h4{font-size:15px;color:var(--primary);margin:14px 0 6px}
 #content p{margin:10px 0;text-align:justify;line-height:2}
 #content ul,#content ol{margin:10px 20px 10px 0;padding-right:16px}
 #content li{margin:6px 0;line-height:1.9}
 #content strong{color:var(--accent2)}
 #content em{color:var(--accent)}
-
-/* کارت‌های ویژه */
-.callout{
-  background:var(--card);border-radius:12px;padding:14px 16px;
-  margin:14px 0;box-shadow:var(--shadow);border-right:4px solid var(--accent);
-}
+.callout{background:var(--card);border-radius:12px;padding:14px 16px;margin:14px 0;box-shadow:var(--shadow);border-right:4px solid var(--accent)}
 .callout.warn{border-right-color:#f39c12;background:linear-gradient(to left,rgba(243,156,18,.08),var(--card))}
 .callout.danger{border-right-color:#e74c3c;background:linear-gradient(to left,rgba(231,76,60,.08),var(--card))}
 .callout.tip{border-right-color:#3498db;background:linear-gradient(to left,rgba(52,152,219,.08),var(--card))}
@@ -88,189 +67,71 @@ body{
 .callout.warn .callout-title{color:#d35400}
 .callout.danger .callout-title{color:#c0392b}
 .callout.tip .callout-title{color:#2980b9}
-
-/* جدول */
-table{width:100%;border-collapse:collapse;margin:14px 0;background:var(--card);
-  border-radius:10px;overflow:hidden;box-shadow:var(--shadow);font-size:13.5px}
+table{width:100%;border-collapse:collapse;margin:14px 0;background:var(--card);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);font-size:13.5px}
 th{background:var(--accent);color:#fff;padding:10px;text-align:right;font-size:12.5px}
 td{padding:10px;border-bottom:1px solid var(--border);text-align:right}
 tr:last-child td{border-bottom:none}
 tr:nth-child(even) td{background:var(--card2)}
-
-/* دکمه‌های پایین */
-.nav-btns{
-  position:fixed;bottom:0;left:0;right:0;
-  background:var(--card);border-top:1px solid var(--border);
-  padding:8px 10px;display:flex;gap:6px;z-index:100;
-  box-shadow:0 -4px 12px rgba(0,0,0,.08);
-}
-.nav-btns button{
-  flex:1;padding:11px 8px;border:none;border-radius:10px;
-  background:var(--card2);color:var(--text);font-size:12.5px;
-  font-family:inherit;font-weight:bold;cursor:pointer;
-}
+.nav-btns{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);padding:8px 10px;display:flex;gap:6px;z-index:100;box-shadow:0 -4px 12px rgba(0,0,0,.08)}
+.nav-btns button{flex:1;padding:11px 8px;border:none;border-radius:10px;background:var(--card2);color:var(--text);font-size:12.5px;font-family:inherit;font-weight:bold;cursor:pointer}
 .nav-btns button:active{transform:scale(.96)}
 .nav-btns button:disabled{opacity:.4;cursor:not-allowed}
 .nav-btns .primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
-
-/* پنل کنترل صوتی */
-.audio-panel{
-  position:fixed;bottom:56px;left:0;right:0;
-  background:linear-gradient(135deg,var(--nav-bg),#0a2e24);
-  color:#fff;padding:14px 14px 12px;
-  transform:translateY(100%);transition:transform .3s ease;
-  z-index:98;box-shadow:0 -4px 20px rgba(0,0,0,.2);
-}
+.audio-panel{position:fixed;bottom:56px;left:0;right:0;background:linear-gradient(135deg,var(--nav-bg),#0a2e24);color:#fff;padding:14px 14px 12px;transform:translateY(100%);transition:transform .3s ease;z-index:98;box-shadow:0 -4px 20px rgba(0,0,0,.2)}
 .audio-panel.open{transform:translateY(0)}
-.audio-header{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:10px;font-size:12px;
-}
+.audio-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:12px}
 .audio-title{font-weight:bold;color:var(--accent);display:flex;align-items:center;gap:6px}
-.audio-close{
-  width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.15);
-  border:none;color:#fff;font-size:14px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-}
-.audio-controls{
-  display:flex;justify-content:center;align-items:center;gap:10px;
-  margin-bottom:10px;
-}
-.audio-btn{
-  width:48px;height:48px;border-radius:50%;border:none;
-  background:rgba(255,255,255,.15);color:#fff;font-size:20px;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  transition:transform .15s,background .2s;
-}
+.audio-close{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.audio-controls{display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:10px}
+.audio-btn{width:48px;height:48px;border-radius:50%;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .2s}
 .audio-btn:active{transform:scale(.9)}
 .audio-btn.play{background:var(--accent);color:#fff;width:56px;height:56px;font-size:24px}
-.audio-btn.play:active{transform:scale(.92)}
-.audio-status{
-  text-align:center;font-size:11.5px;color:rgba(255,255,255,.75);
-  margin-bottom:8px;height:16px;overflow:hidden;
-}
-.audio-progress{
-  height:3px;background:rgba(255,255,255,.15);border-radius:2px;
-  overflow:hidden;margin-bottom:10px;
-}
+.audio-status{text-align:center;font-size:11.5px;color:rgba(255,255,255,.75);margin-bottom:8px;height:16px;overflow:hidden}
+.audio-progress{height:3px;background:rgba(255,255,255,.15);border-radius:2px;overflow:hidden;margin-bottom:10px}
 .audio-progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
-.speed-row{
-  display:flex;gap:6px;justify-content:center;font-size:11px;
-}
-.speed-row button{
-  padding:5px 10px;border-radius:12px;background:rgba(255,255,255,.12);
-  border:none;color:#fff;cursor:pointer;font-family:inherit;font-size:11px;
-}
+.speed-row{display:flex;gap:6px;justify-content:center;font-size:11px}
+.speed-row button{padding:5px 10px;border-radius:12px;background:rgba(255,255,255,.12);border:none;color:#fff;cursor:pointer;font-family:inherit;font-size:11px}
 .speed-row button.active{background:var(--accent);color:#fff;font-weight:bold}
-
-/* منوی کشویی */
-.drawer{
-  position:fixed;top:0;right:0;bottom:0;width:300px;max-width:85%;
-  background:var(--card);z-index:200;transform:translateX(100%);
-  transition:transform .3s ease;overflow-y:auto;
-  box-shadow:-10px 0 30px rgba(0,0,0,.3);
-}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:300px;max-width:85%;background:var(--card);z-index:200;transform:translateX(100%);transition:transform .3s ease;overflow-y:auto;box-shadow:-10px 0 30px rgba(0,0,0,.3)}
 .drawer.open{transform:translateX(0)}
-.drawer-head{
-  background:var(--nav-bg);color:var(--nav-text);padding:20px 16px;
-  position:sticky;top:0;z-index:1;
-}
+.drawer-head{background:var(--nav-bg);color:var(--nav-text);padding:20px 16px;position:sticky;top:0;z-index:1}
 .drawer-head h3{color:#fff;margin:0 0 6px;font-size:15px;border:none;padding:0}
 .drawer-head p{font-size:11px;color:rgba(255,255,255,.7);margin:0}
 .drawer-list{padding:10px 0}
-.drawer-item{
-  padding:12px 18px;font-size:13.5px;cursor:pointer;
-  border-right:3px solid transparent;display:flex;align-items:center;gap:10px;
-  color:var(--text);
-}
+.drawer-item{padding:12px 18px;font-size:13.5px;cursor:pointer;border-right:3px solid transparent;display:flex;align-items:center;gap:10px;color:var(--text)}
 .drawer-item:active{background:var(--card2)}
-.drawer-item.active{
-  background:var(--card2);border-right-color:var(--accent);
-  color:var(--accent2);font-weight:bold;
-}
-.drawer-item .num{
-  width:26px;height:26px;border-radius:6px;background:var(--card2);
-  color:var(--accent2);display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:bold;flex-shrink:0;
-}
+.drawer-item.active{background:var(--card2);border-right-color:var(--accent);color:var(--accent2);font-weight:bold}
+.drawer-item .num{width:26px;height:26px;border-radius:6px;background:var(--card2);color:var(--accent2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;flex-shrink:0}
 .drawer-item.active .num{background:var(--accent);color:#fff}
-.backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199;
-  opacity:0;pointer-events:none;transition:opacity .3s;
-}
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199;opacity:0;pointer-events:none;transition:opacity .3s}
 .backdrop.open{opacity:1;pointer-events:auto}
-
-/* جستجو */
-.search-overlay{
-  position:fixed;inset:0;background:var(--bg);z-index:300;
-  transform:translateY(-100%);transition:transform .3s ease;
-  overflow-y:auto;padding:70px 16px 20px;
-}
+.search-overlay{position:fixed;inset:0;background:var(--bg);z-index:300;transform:translateY(-100%);transition:transform .3s ease;overflow-y:auto;padding:70px 16px 20px}
 .search-overlay.open{transform:translateY(0)}
-.search-box{
-  flex:1;padding:13px 16px;border-radius:12px;
-  background:var(--card);border:2px solid var(--accent);color:var(--text);
-  font-family:inherit;font-size:14px;
-}
+.search-box{flex:1;padding:13px 16px;border-radius:12px;background:var(--card);border:2px solid var(--accent);color:var(--text);font-family:inherit;font-size:14px}
 .search-box:focus{outline:none}
 .search-results{margin-top:16px}
-.result-item{
-  padding:14px;background:var(--card);border-radius:12px;
-  margin:8px 0;cursor:pointer;box-shadow:var(--shadow);
-}
+.result-item{padding:14px;background:var(--card);border-radius:12px;margin:8px 0;cursor:pointer;box-shadow:var(--shadow)}
 .result-item:active{transform:scale(.98)}
 .result-title{font-size:13px;font-weight:bold;color:var(--accent2);margin-bottom:6px}
 .result-snippet{font-size:12.5px;color:var(--muted);line-height:1.7}
 mark{background:rgba(255,183,3,.5);color:inherit;padding:0 2px;border-radius:3px}
-
-/* صفحهٔ اول */
 .cover{text-align:center;padding:20px}
 .cover-icon{font-size:72px;margin-bottom:14px;display:block}
 .cover-title{font-size:23px;font-weight:bold;color:var(--accent2);margin-bottom:8px;line-height:1.5}
 .cover-sub{font-size:13px;color:var(--muted);margin-bottom:6px}
-.cover-org{
-  display:inline-block;margin-top:16px;padding:7px 14px;
-  background:var(--card2);color:var(--accent2);border-radius:20px;
-  font-size:12px;font-weight:bold;border:1px solid var(--accent);
-}
-.cover-desc{
-  margin:24px 0;padding:16px;background:var(--card);border-radius:12px;
-  font-size:13px;color:var(--muted);line-height:1.9;text-align:right;
-  border-right:4px solid var(--accent);
-}
-.cover-btn{
-  display:inline-block;width:100%;max-width:280px;padding:14px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:bold;
-  font-family:inherit;cursor:pointer;margin-top:8px;
-  box-shadow:0 8px 24px rgba(46,204,113,.3);
-}
+.cover-org{display:inline-block;margin-top:16px;padding:7px 14px;background:var(--card2);color:var(--accent2);border-radius:20px;font-size:12px;font-weight:bold;border:1px solid var(--accent)}
+.cover-desc{margin:24px 0;padding:16px;background:var(--card);border-radius:12px;font-size:13px;color:var(--muted);line-height:1.9;text-align:right;border-right:4px solid var(--accent)}
+.cover-btn{display:inline-block;width:100%;max-width:280px;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:bold;font-family:inherit;cursor:pointer;margin-top:8px;box-shadow:0 8px 24px rgba(46,204,113,.3)}
 .cover-btn:active{transform:scale(.97)}
 .cover-stats{display:flex;justify-content:center;gap:12px;margin:20px 0;flex-wrap:wrap}
-.stat-box{
-  background:var(--card);padding:10px 14px;border-radius:12px;
-  box-shadow:var(--shadow);min-width:80px;
-}
+.stat-box{background:var(--card);padding:10px 14px;border-radius:12px;box-shadow:var(--shadow);min-width:80px}
 .stat-num{font-size:20px;font-weight:bold;color:var(--accent2)}
 .stat-lbl{font-size:10.5px;color:var(--muted);margin-top:4px}
-
 .loading{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;line-height:2}
-.spinner{
-  width:40px;height:40px;border:4px solid var(--card2);
-  border-top-color:var(--accent);border-radius:50%;
-  animation:spin 1s linear infinite;margin:0 auto 16px;
-}
+.spinner{width:40px;height:40px;border:4px solid var(--card2);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* کلمهٔ در حال خواندن */
-.reading-word{
-  background:rgba(255,183,3,.3);
-  border-radius:3px;
-  padding:0 2px;
-  transition:background .1s;
-}
 ::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar::-webkit-scrollbar-track{background:var(--card2)}
+::-webkit-scrollbar-track{background:var(--card2)}
 ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
 </style>
 </head>
@@ -289,7 +150,6 @@ mark{background:rgba(255,183,3,.5);color:inherit;padding:0 2px;border-radius:3px
   <div id="content"></div>
 </div>
 
-<!-- پنل کنترل صوتی -->
 <div class="audio-panel" id="audioPanel">
   <div class="audio-header">
     <div class="audio-title">🔊 خواندن صوتی</div>
@@ -332,7 +192,6 @@ mark{background:rgba(255,183,3,.5);color:inherit;padding:0 2px;border-radius:3px
   <div class="search-results" id="searchResults"></div>
 </div>
 
-<!-- بارگذاری فصل‌ها -->
 <script src="chapters1.js"></script>
 <script src="chapters2.js"></script>
 <script src="chapters3.js"></script>
@@ -350,52 +209,50 @@ var CHAPTERS = window.SAFETY_BOOK || [];
 var currentIdx = -1;
 var fontSizeLevels = [14, 16, 18, 20];
 var currentFont = 1;
-var STORAGE_KEY = 'safety_book_state_v2';
+var STORAGE_KEY = 'safety_book_state_v3';
 
-/* ==== مدیریت صوتی ==== */
+/* ===== تشخیص TTS ===== */
+var hasAndroidTTS = false;
+try {
+  if (typeof AndroidTTS !== 'undefined' && AndroidTTS !== null) {
+    if (typeof AndroidTTS.isAvailable === 'function') {
+      hasAndroidTTS = AndroidTTS.isAvailable();
+    } else {
+      hasAndroidTTS = true;
+    }
+  }
+} catch(e) {
+  hasAndroidTTS = false;
+}
+var hasWebTTS = ('speechSynthesis' in window) && ('SpeechSynthesisUtterance' in window);
+var ttsAvailable = hasAndroidTTS || hasWebTTS;
+
+/* ===== حالت صوتی ===== */
 var audio = {
-  supported: typeof speechSynthesis !== 'undefined',
   speaking: false,
   paused: false,
   speed: 1.0,
-  voice: null,
   utterance: null,
-  chunks: [],       // متن به تکه‌های کوچک تقسیم می‌شود
+  chunks: [],
   currentChunk: 0,
-  textContent: ''   // متن کامل فصل فعلی
+  timer: null,
+  useAndroid: hasAndroidTTS
 };
 
-function initVoice() {
-  if (!audio.supported) return;
-  var voices = speechSynthesis.getVoices();
-  // اولویت ۱: فارسی
-  for (var i = 0; i < voices.length; i++) {
-    if (voices[i].lang && voices[i].lang.indexOf('fa') === 0) {
-      audio.voice = voices[i];
-      break;
-    }
+function extractReadableText(html) {
+  var tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  var tables = tmp.querySelectorAll('table');
+  for (var i = 0; i < tables.length; i++) {
+    tables[i].parentNode.removeChild(tables[i]);
   }
-  // اولویت ۲: اگه فارسی نبود، عربی (چون نزدیک‌تره)
-  if (!audio.voice) {
-    for (var j = 0; j < voices.length; j++) {
-      if (voices[j].lang && voices[j].lang.indexOf('ar') === 0) {
-        audio.voice = voices[j];
-        break;
-      }
-    }
-  }
-  // اولویت ۳: اولین voice موجود
-  if (!audio.voice && voices.length > 0) audio.voice = voices[0];
-}
-if (audio.supported) {
-  initVoice();
-  if (speechSynthesis.onvoiceschanged !== undefined) {
-    speechSynthesis.onvoiceschanged = initVoice;
-  }
+  var text = tmp.textContent || tmp.innerText || '';
+  text = text.replace(/\s+/g, ' ').trim();
+  return text;
 }
 
 function splitIntoChunks(text, maxLen) {
-  maxLen = maxLen || 180;
+  maxLen = maxLen || 200;
   var sentences = text.split(/(?<=[.!?؟।])\s+/);
   var chunks = [];
   var current = '';
@@ -405,15 +262,14 @@ function splitIntoChunks(text, maxLen) {
     if ((current + ' ' + s).length > maxLen) {
       if (current) chunks.push(current.trim());
       if (s.length > maxLen) {
-        // جملهٔ خیلی طولانی، تقسیم بر اساس ویرگول یا فاصله
-        var parts = s.split(/[،,؛;]\s*/);
+        var words = s.split(' ');
         var sub = '';
-        for (var k = 0; k < parts.length; k++) {
-          if ((sub + ' ' + parts[k]).length > maxLen) {
+        for (var k = 0; k < words.length; k++) {
+          if ((sub + ' ' + words[k]).length > maxLen) {
             if (sub) chunks.push(sub.trim());
-            sub = parts[k];
+            sub = words[k];
           } else {
-            sub = sub ? sub + '، ' + parts[k] : parts[k];
+            sub = sub ? sub + ' ' + words[k] : words[k];
           }
         }
         if (sub) current = sub;
@@ -428,111 +284,122 @@ function splitIntoChunks(text, maxLen) {
   return chunks;
 }
 
-function extractReadableText(html) {
-  var tmp = document.createElement('div');
-  tmp.innerHTML = html;
-  // حذف جدول‌ها (معمولاً به‌صورت صوتی بد هستند)
-  var tables = tmp.querySelectorAll('table');
-  for (var i = 0; i < tables.length; i++) {
-    tables[i].parentNode.removeChild(tables[i]);
+function speakChunk(text, onEnd) {
+  if (audio.useAndroid) {
+    try {
+      AndroidTTS.speak(text);
+    } catch(e) {}
+    var charsPerSec = 15 * audio.speed;
+    var estimatedMs = (text.length / charsPerSec) * 1000 + 500;
+    audio.timer = setTimeout(function() {
+      if (onEnd && audio.speaking && !audio.paused) onEnd();
+    }, estimatedMs);
+  } else if (hasWebTTS) {
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'fa-IR';
+    u.rate = audio.speed;
+    u.pitch = 1.0;
+    u.onend = function() {
+      if (onEnd && audio.speaking && !audio.paused) onEnd();
+    };
+    u.onerror = function() {
+      if (onEnd && audio.speaking && !audio.paused) onEnd();
+    };
+    audio.utterance = u;
+    window.speechSynthesis.speak(u);
   }
-  var text = tmp.textContent || tmp.innerText || '';
-  // پاکسازی
-  text = text.replace(/\s+/g, ' ').trim();
-  return text;
 }
 
 function startAudio() {
-  if (!audio.supported) {
-    alert('مرورگر یا سیستم شما از خواندن صوتی پشتیبانی نمی‌کند.');
+  if (!ttsAvailable) {
+    alert('خواندن صوتی پشتیبانی نمی‌شود. لطفاً Google Text-to-Speech را نصب کنید.');
     return;
   }
   if (currentIdx < 0 || currentIdx >= CHAPTERS.length) {
-    alert('اول یک فصل رو باز کن.');
+    alert('اول یک فصل را باز کن.');
     return;
   }
   var ch = CHAPTERS[currentIdx];
-  audio.textContent = extractReadableText(ch.content);
-  audio.chunks = splitIntoChunks(audio.textContent, 180);
+  var text = extractReadableText(ch.content);
+  audio.chunks = splitIntoChunks(text, 200);
   audio.currentChunk = 0;
-  speakNextChunk();
+  audio.speaking = true;
+  audio.paused = false;
+  speakCurrent();
 }
-function speakNextChunk() {
-  if (audio.currentChunk >= audio.chunks.length) {
-    audio.speaking = false;
-    audio.paused = false;
-    updateAudioUI();
-    setAudioStatus('✅ پایان فصل');
+
+function speakCurrent() {
+  if (!audio.speaking || audio.currentChunk >= audio.chunks.length) {
+    finishAudio();
     return;
   }
   var chunk = audio.chunks[audio.currentChunk];
-  var u = new SpeechSynthesisUtterance(chunk);
-  if (audio.voice) u.voice = audio.voice;
-  u.lang = audio.voice ? audio.voice.lang : 'fa-IR';
-  u.rate = audio.speed;
-  u.pitch = 1.0;
-  u.onend = function() {
-    if (audio.speaking && !audio.paused) {
-      audio.currentChunk++;
-      updateAudioProgress();
-      speakNextChunk();
-    }
-  };
-  u.onerror = function(e) {
-    console.error('Speech error:', e);
-    if (audio.speaking && !audio.paused) {
-      audio.currentChunk++;
-      speakNextChunk();
-    }
-  };
-  audio.utterance = u;
-  audio.speaking = true;
-  audio.paused = false;
-  speechSynthesis.speak(u);
-  updateAudioUI();
-  var pct = (audio.currentChunk / audio.chunks.length) * 100;
-  setAudioStatus('در حال خواندن... (' + Math.round(pct) + '٪)');
+  setAudioStatus('در حال خواندن... (' + Math.round((audio.currentChunk / audio.chunks.length) * 100) + '٪)');
+  updateAudioProgress();
+  speakChunk(chunk, function() {
+    if (!audio.speaking || audio.paused) return;
+    audio.currentChunk++;
+    speakCurrent();
+  });
 }
+
 function togglePlay() {
-  if (!audio.supported) {
+  if (!ttsAvailable) {
     alert('خواندن صوتی پشتیبانی نمی‌شود.');
     return;
   }
-  if (!audio.speaking && audio.chunks.length === 0) {
+  if (audio.chunks.length === 0) {
     startAudio();
     return;
   }
   if (audio.speaking && !audio.paused) {
-    // Pause
-    speechSynthesis.pause();
     audio.paused = true;
+    if (audio.useAndroid) {
+      try { AndroidTTS.stop(); } catch(e) {}
+      if (audio.timer) clearTimeout(audio.timer);
+    } else if (hasWebTTS) {
+      window.speechSynthesis.pause();
+    }
     setAudioStatus('⏸ متوقف');
-    updateAudioUI();
+    document.getElementById('playBtn').textContent = '▶';
   } else if (audio.paused) {
-    speechSynthesis.resume();
     audio.paused = false;
-    setAudioStatus('در حال خواندن...');
-    updateAudioUI();
+    audio.speaking = true;
+    document.getElementById('playBtn').textContent = '⏸';
+    speakCurrent();
   } else {
     startAudio();
   }
 }
+
 function stopAudio() {
-  if (audio.supported) {
-    speechSynthesis.cancel();
-  }
   audio.speaking = false;
   audio.paused = false;
-  audio.currentChunk = 0;
   audio.chunks = [];
+  audio.currentChunk = 0;
+  if (audio.timer) clearTimeout(audio.timer);
+  if (audio.useAndroid) {
+    try { AndroidTTS.stop(); } catch(e) {}
+  } else if (hasWebTTS) {
+    window.speechSynthesis.cancel();
+  }
   setAudioStatus('برای شروع، دکمهٔ پخش را بزنید');
-  updateAudioUI();
+  document.getElementById('playBtn').textContent = '▶';
   document.getElementById('audioProgress').style.width = '0%';
 }
+
 function restartAudio() {
   stopAudio();
   setTimeout(startAudio, 200);
 }
+
+function finishAudio() {
+  audio.speaking = false;
+  audio.paused = false;
+  document.getElementById('playBtn').textContent = '▶';
+  setAudioStatus('✅ پایان فصل');
+}
+
 function setSpeed(s) {
   audio.speed = s;
   var btns = document.querySelectorAll('.speed-row button');
@@ -542,69 +409,49 @@ function setSpeed(s) {
       btns[i].classList.add('active');
     }
   }
-  // اگه در حال پخشه، از همون جا با سرعت جدید ادامه بده
-  if (audio.speaking) {
-    var wasPaused = audio.paused;
-    speechSynthesis.cancel();
-    audio.currentChunk = Math.max(0, audio.currentChunk);
-    setTimeout(function() {
-      if (!wasPaused) speakNextChunk();
-    }, 150);
+  if (audio.useAndroid) {
+    try { AndroidTTS.setRate(s); } catch(e) {}
+  }
+  if (audio.speaking && !audio.paused) {
+    var wasChunk = audio.currentChunk;
+    if (audio.useAndroid) {
+      try { AndroidTTS.stop(); } catch(e) {}
+    } else if (hasWebTTS) {
+      window.speechSynthesis.cancel();
+    }
+    if (audio.timer) clearTimeout(audio.timer);
+    audio.currentChunk = wasChunk;
+    setTimeout(speakCurrent, 200);
   }
 }
+
 function toggleAudio() {
   var panel = document.getElementById('audioPanel');
   var btn = document.getElementById('audioBtn');
   var open = panel.classList.toggle('open');
   btn.classList.toggle('active', open);
   if (!open) {
-    // بستن پنل = توقف صدا
-    if (audio.speaking) stopAudio();
-  } else {
-    if (audio.chunks.length === 0 && currentIdx >= 0) {
-      // آماده‌سازی
-      var ch = CHAPTERS[currentIdx];
-      audio.textContent = extractReadableText(ch.content);
-      audio.chunks = splitIntoChunks(audio.textContent, 180);
-    }
+    stopAudio();
   }
 }
-function updateAudioUI() {
-  var btn = document.getElementById('playBtn');
-  if (!btn) return;
-  if (audio.speaking && !audio.paused) btn.textContent = '⏸';
-  else btn.textContent = '▶';
-}
+
 function updateAudioProgress() {
   if (audio.chunks.length === 0) return;
   var pct = (audio.currentChunk / audio.chunks.length) * 100;
   document.getElementById('audioProgress').style.width = pct + '%';
-  setAudioStatus('در حال خواندن... (' + Math.round(pct) + '٪)');
 }
+
 function setAudioStatus(msg) {
   var el = document.getElementById('audioStatus');
   if (el) el.textContent = msg;
 }
-function stopAudioOnNavigation() {
-  if (audio.speaking) {
-    speechSynthesis.cancel();
-    audio.speaking = false;
-    audio.paused = false;
-    audio.chunks = [];
-    audio.currentChunk = 0;
-    updateAudioUI();
-    document.getElementById('audioProgress').style.width = '0%';
-    setAudioStatus('برای شروع، دکمهٔ پخش را بزنید');
-  }
-}
 
-/* ==== مدیریت وضعیت ==== */
 function loadState() {
   try {
     var s = localStorage.getItem(STORAGE_KEY);
     if (s) return JSON.parse(s);
   } catch(e) {}
-  return { idx: -1, theme: 'light', font: 1, audioSpeed: 1.0 };
+  return { idx: -1, theme: 'light', font: 1, speed: 1.0 };
 }
 function saveState() {
   try {
@@ -612,14 +459,13 @@ function saveState() {
       idx: currentIdx,
       theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
       font: currentFont,
-      audioSpeed: audio.speed
+      speed: audio.speed
     }));
   } catch(e) {}
 }
 
-/* ==== رندر ==== */
 function renderCover() {
-  stopAudioOnNavigation();
+  stopAudio();
   currentIdx = -1;
   document.getElementById('topTitle').textContent = 'معرفی کتاب';
   document.getElementById('content').innerHTML =
@@ -653,7 +499,7 @@ function renderCover() {
 }
 
 function renderChapter(idx) {
-  stopAudioOnNavigation();
+  stopAudio();
   if (idx < 0) { renderCover(); return; }
   if (idx >= CHAPTERS.length) idx = CHAPTERS.length - 1;
   currentIdx = idx;
@@ -672,13 +518,6 @@ function renderChapter(idx) {
   updateDrawer();
   window.scrollTo(0, 0);
   saveState();
-  // اگه پنل صوتی بازه، محتوای فصل جدید رو آماده کن
-  if (document.getElementById('audioPanel').classList.contains('open')) {
-    audio.textContent = extractReadableText(ch.content);
-    audio.chunks = splitIntoChunks(audio.textContent, 180);
-    audio.currentChunk = 0;
-    setAudioStatus('آماده برای پخش');
-  }
 }
 
 function goToChapter(idx) { renderChapter(idx); closeDrawer(); closeSearch(); }
@@ -691,7 +530,6 @@ function goPrev() {
   else if (currentIdx > 0) renderChapter(currentIdx - 1);
 }
 
-/* ==== فهرست ==== */
 function buildDrawerList() {
   var html = '<div class="drawer-item" onclick="goToChapter(-1)" data-idx="-1">' +
     '<span class="num">🏠</span> معرفی کتاب</div>';
@@ -719,7 +557,6 @@ function closeDrawer() {
   document.getElementById('backdrop').classList.remove('open');
 }
 
-/* ==== جستجو ==== */
 function openSearch() {
   document.getElementById('searchOverlay').classList.add('open');
   setTimeout(function(){ document.getElementById('searchInput').focus(); }, 300);
@@ -774,14 +611,12 @@ function escapeHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-/* ==== تنظیمات ==== */
 function toggleTheme() {
   var isDark = document.documentElement.classList.toggle('dark');
   document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
   saveState();
 }
 
-/* ==== راه‌اندازی ==== */
 (function init() {
   var s = loadState();
   if (s.theme === 'dark') {
@@ -792,8 +627,13 @@ function toggleTheme() {
     currentFont = s.font;
     document.documentElement.style.setProperty('--font-size', fontSizeLevels[currentFont] + 'px');
   }
-  if (s.audioSpeed) {
-    audio.speed = s.audioSpeed;
+  if (s.speed) audio.speed = s.speed;
+  if (!ttsAvailable) {
+    var btn = document.getElementById('audioBtn');
+    if (btn) {
+      btn.style.opacity = '0.4';
+      btn.title = 'صدا پشتیبانی نمی‌شود';
+    }
   }
   buildDrawerList();
   if (CHAPTERS.length === 0) {
@@ -804,7 +644,12 @@ function toggleTheme() {
     renderCover();
   }
   window.addEventListener('beforeunload', function() {
-    if (audio.speaking) speechSynthesis.cancel();
+    if (audio.timer) clearTimeout(audio.timer);
+    if (audio.useAndroid) {
+      try { AndroidTTS.stop(); } catch(e) {}
+    } else if (hasWebTTS) {
+      window.speechSynthesis.cancel();
+    }
     saveState();
   });
 })();
