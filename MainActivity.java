@@ -29,25 +29,25 @@ public class MainActivity extends AppCompatActivity {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        // راه‌اندازی TTS بومی اندروید
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 if (status == TextToSpeech.SUCCESS) {
-                    // تلاش برای زبان فارسی
-                    int result = tts.setLanguage(new Locale("fa", "IR"));
-                    if (result == TextToSpeech.LANG_MISSING_DATA ||
-                        result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        // اگر فارسی نبود، عربی (نزدیک‌تر)
-                        int r2 = tts.setLanguage(new Locale("ar"));
-                        if (r2 == TextToSpeech.LANG_MISSING_DATA ||
-                            r2 == TextToSpeech.LANG_NOT_SUPPORTED) {
-                            // در نهایت انگلیسی
-                            tts.setLanguage(Locale.US);
+                    try {
+                        int result = tts.setLanguage(new Locale("fa", "IR"));
+                        if (result == TextToSpeech.LANG_MISSING_DATA ||
+                            result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                            result = tts.setLanguage(new Locale("ar"));
+                            if (result == TextToSpeech.LANG_MISSING_DATA ||
+                                result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                                tts.setLanguage(Locale.US);
+                            }
                         }
+                        tts.setSpeechRate(1.0f);
+                        tts.setPitch(1.0f);
+                    } catch (Exception e) {
+                        // ignore
                     }
-                    tts.setSpeechRate(1.0f);
-                    tts.setPitch(1.0f);
                 }
             }
         });
@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebChromeClient(new WebChromeClient());
         webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
-        // اضافه کردن پل TTS برای جاوااسکریپت
         webView.addJavascriptInterface(new TTSBridge(), "AndroidTTS");
 
         webView.loadUrl("file:///android_asset/index.html");
@@ -102,13 +101,12 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    // کلاس پل ارتباطی برای جاوااسکریپت
     public class TTSBridge {
         @JavascriptInterface
         public void speak(String text) {
             if (tts != null && text != null && !text.isEmpty()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "safety_book_utterance");
+                    tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "safety_utt");
                 } else {
                     tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
                 }
@@ -117,12 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public void stop() {
-            if (tts != null) tts.stop();
-        }
-
-        @JavascriptInterface
-        public void pause() {
-            // TextToSpeech بومی pause ندارد، اما می‌تونیم با stop شبیه‌سازی کنیم
             if (tts != null) tts.stop();
         }
 
