@@ -1,0 +1,68 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup directories
+        run: |
+          mkdir -p oilquiz/src/main/java/com/ahvaz/safetybook
+          mkdir -p oilquiz/src/main/res/layout
+          mkdir -p oilquiz/src/main/res/values
+          mkdir -p oilquiz/src/main/res/drawable
+          mkdir -p oilquiz/src/main/assets
+
+      - name: Copy all files
+        run: |
+          cp index.html oilquiz/src/main/assets/index.html
+          cp chapters1.js oilquiz/src/main/assets/chapters1.js
+          cp chapters2.js oilquiz/src/main/assets/chapters2.js
+          cp chapters3.js oilquiz/src/main/assets/chapters3.js
+          cp chapters4.js oilquiz/src/main/assets/chapters4.js
+          cp chapters5.js oilquiz/src/main/assets/chapters5.js
+          cp chapters6.js oilquiz/src/main/assets/chapters6.js
+          cp chapters7.js oilquiz/src/main/assets/chapters7.js
+          cp chapters8.js oilquiz/src/main/assets/chapters8.js
+          cp chapters9.js oilquiz/src/main/assets/chapters9.js
+          cp chapters10.js oilquiz/src/main/assets/chapters10.js
+          cp AndroidManifest.xml oilquiz/src/main/AndroidManifest.xml
+          cp MainActivity.java oilquiz/src/main/java/com/ahvaz/safetybook/MainActivity.java
+          cp activity_main.xml oilquiz/src/main/res/layout/activity_main.xml
+          cp strings.xml oilquiz/src/main/res/values/strings.xml
+          cp themes.xml oilquiz/src/main/res/values/themes.xml
+          cp ic_oil.xml oilquiz/src/main/res/drawable/ic_oil.xml
+          cp module_build.gradle oilquiz/build.gradle
+
+      - name: Verify files
+        run: |
+          echo "=== ASSETS ==="
+          ls -la oilquiz/src/main/assets/
+          echo ""
+          echo "=== JAVA ==="
+          ls -la oilquiz/src/main/java/com/ahvaz/safetybook/
+
+      - name: Create local.properties
+        run: echo "sdk.dir=$ANDROID_HOME" > local.properties
+
+      - name: Build APK
+        run: |
+          gradle wrapper --gradle-version 8.4
+          chmod +x ./gradlew
+          ./gradlew :oilquiz:assembleDebug --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LabSafetyEbook-APK
+          path: oilquiz/build/outputs/apk/debug/*.apk
+          if-no-files-found: warn
