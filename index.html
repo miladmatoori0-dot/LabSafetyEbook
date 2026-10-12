@@ -22,29 +22,12 @@ html.dark{
   --nav-bg:#061410;--nav-text:#e8f5ee;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
-body{
-  font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);
-  font-size:var(--font-size);line-height:1.9;transition:background .3s,color .3s;
-  min-height:100vh;
-}
-.topbar{
-  position:fixed;top:0;left:0;right:0;height:56px;
-  background:var(--nav-bg);color:var(--nav-text);
-  display:flex;align-items:center;padding:0 8px;gap:6px;
-  z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15);
-}
-.topbar .icon-btn{
-  width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);
-  border:none;color:inherit;font-size:16px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  transition:transform .15s;
-}
+body{font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:var(--font-size);line-height:1.9;transition:background .3s,color .3s;min-height:100vh}
+.topbar{position:fixed;top:0;left:0;right:0;height:56px;background:var(--nav-bg);color:var(--nav-text);display:flex;align-items:center;padding:0 8px;gap:6px;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.topbar .icon-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);border:none;color:inherit;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s}
 .topbar .icon-btn:active{transform:scale(.88)}
 .topbar .icon-btn.active{background:var(--accent);color:#fff}
-.topbar .title{
-  flex:1;font-size:13px;font-weight:bold;white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis;text-align:center;
-}
+.topbar .title{flex:1;font-size:13px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
 .progress-bar{position:fixed;top:56px;left:0;right:0;height:3px;background:rgba(255,255,255,.1);z-index:99}
 .progress-fill{height:100%;background:var(--accent);width:0;transition:width .2s}
 #app{padding:70px 16px 130px;max-width:700px;margin:0 auto}
@@ -77,7 +60,7 @@ tr:nth-child(even) td{background:var(--card2)}
 .nav-btns button:active{transform:scale(.96)}
 .nav-btns button:disabled{opacity:.4;cursor:not-allowed}
 .nav-btns .primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
-.audio-panel{position:fixed;bottom:56px;left:0;right:0;background:linear-gradient(135deg,var(--nav-bg),#0a2e24);color:#fff;padding:14px 14px 12px;transform:translateY(100%);transition:transform .3s ease;z-index:98;box-shadow:0 -4px 20px rgba(0,0,0,.2)}
+.audio-panel{position:fixed;bottom:56px;left:0;right:0;background:linear-gradient(135deg,var(--nav-bg),#0a2e24);color:#fff;padding:14px 14px 12px;transform:translateY(100%);transition:transform .3s ease;z-index:98;box-shadow:0 -4px 20px rgba(0,0,0,.2);max-height:60vh;overflow-y:auto}
 .audio-panel.open{transform:translateY(0)}
 .audio-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:12px}
 .audio-title{font-weight:bold;color:var(--accent);display:flex;align-items:center;gap:6px}
@@ -86,12 +69,27 @@ tr:nth-child(even) td{background:var(--card2)}
 .audio-btn{width:48px;height:48px;border-radius:50%;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .2s}
 .audio-btn:active{transform:scale(.9)}
 .audio-btn.play{background:var(--accent);color:#fff;width:56px;height:56px;font-size:24px}
-.audio-status{text-align:center;font-size:11.5px;color:rgba(255,255,255,.75);margin-bottom:8px;height:16px;overflow:hidden}
+.audio-status{text-align:center;font-size:11.5px;color:rgba(255,255,255,.75);margin-bottom:8px;min-height:16px;line-height:1.5}
 .audio-progress{height:3px;background:rgba(255,255,255,.15);border-radius:2px;overflow:hidden;margin-bottom:10px}
 .audio-progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
 .speed-row{display:flex;gap:6px;justify-content:center;font-size:11px}
 .speed-row button{padding:5px 10px;border-radius:12px;background:rgba(255,255,255,.12);border:none;color:#fff;cursor:pointer;font-family:inherit;font-size:11px}
 .speed-row button.active{background:var(--accent);color:#fff;font-weight:bold}
+.tts-help{
+  background:rgba(255,255,255,.1);
+  border-radius:10px;
+  padding:12px;
+  margin-top:10px;
+  font-size:12px;
+  line-height:1.9;
+  color:rgba(255,255,255,.9);
+  display:none;
+}
+.tts-help.show{display:block}
+.tts-help h4{color:var(--accent);margin-bottom:8px;font-size:13px}
+.tts-help ol{padding-right:18px;margin:8px 0}
+.tts-help li{margin:4px 0}
+.tts-help code{background:rgba(0,0,0,.3);padding:2px 6px;border-radius:4px;font-family:monospace;direction:ltr;display:inline-block}
 .drawer{position:fixed;top:0;right:0;bottom:0;width:300px;max-width:85%;background:var(--card);z-index:200;transform:translateX(100%);transition:transform .3s ease;overflow-y:auto;box-shadow:-10px 0 30px rgba(0,0,0,.3)}
 .drawer.open{transform:translateX(0)}
 .drawer-head{background:var(--nav-bg);color:var(--nav-text);padding:20px 16px;position:sticky;top:0;z-index:1}
@@ -120,34 +118,10 @@ mark{background:rgba(255,183,3,.5);color:inherit;padding:0 2px;border-radius:3px
 .cover-title{font-size:23px;font-weight:bold;color:var(--accent2);margin-bottom:8px;line-height:1.5}
 .cover-sub{font-size:13px;color:var(--muted);margin-bottom:6px}
 .cover-org{display:inline-block;margin-top:16px;padding:7px 14px;background:var(--card2);color:var(--accent2);border-radius:20px;font-size:12px;font-weight:bold;border:1px solid var(--accent)}
-.cover-author{
-  margin:20px auto;
-  padding:14px 20px;
-  background:var(--card);
-  border-radius:14px;
-  box-shadow:var(--shadow);
-  display:inline-block;
-  text-align:center;
-  border:2px solid var(--accent);
-  min-width:260px;
-}
-.cover-author .label{
-  font-size:11px;
-  color:var(--muted);
-  margin-bottom:6px;
-  display:block;
-}
-.cover-author .name{
-  font-size:15px;
-  font-weight:bold;
-  color:var(--accent2);
-  margin-bottom:4px;
-}
-.cover-author .role{
-  font-size:12px;
-  color:var(--text);
-  line-height:1.6;
-}
+.cover-author{margin:20px auto;padding:14px 20px;background:var(--card);border-radius:14px;box-shadow:var(--shadow);display:inline-block;text-align:center;border:2px solid var(--accent);min-width:260px}
+.cover-author .label{font-size:11px;color:var(--muted);margin-bottom:6px;display:block}
+.cover-author .name{font-size:15px;font-weight:bold;color:var(--accent2);margin-bottom:4px}
+.cover-author .role{font-size:12px;color:var(--text);line-height:1.6}
 .cover-desc{margin:24px 0;padding:16px;background:var(--card);border-radius:12px;font-size:13px;color:var(--muted);line-height:1.9;text-align:right;border-right:4px solid var(--accent)}
 .cover-btn{display:inline-block;width:100%;max-width:280px;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:bold;font-family:inherit;cursor:pointer;margin-top:8px;box-shadow:0 8px 24px rgba(46,204,113,.3)}
 .cover-btn:active{transform:scale(.97)}
@@ -183,17 +157,28 @@ mark{background:rgba(255,183,3,.5);color:inherit;padding:0 2px;border-radius:3px
     <div class="audio-title">🔊 خواندن صوتی</div>
     <button class="audio-close" onclick="toggleAudio()">✕</button>
   </div>
-  <div class="audio-status" id="audioStatus">برای شروع، دکمهٔ پخش را بزنید</div>
+  <div class="audio-status" id="audioStatus">در حال آماده‌سازی...</div>
   <div class="audio-progress"><div class="audio-progress-fill" id="audioProgress"></div></div>
-  <div class="audio-controls">
+  <div class="audio-controls" id="audioControls" style="display:none">
     <button class="audio-btn" onclick="restartAudio()" title="از اول">⏮</button>
     <button class="audio-btn play" onclick="togglePlay()" id="playBtn">▶</button>
     <button class="audio-btn" onclick="stopAudio()" title="توقف">⏹</button>
   </div>
-  <div class="speed-row">
+  <div class="speed-row" id="speedRow" style="display:none">
     <button onclick="setSpeed(0.7)" data-speed="0.7">🐢 آهسته</button>
     <button onclick="setSpeed(1.0)" data-speed="1.0" class="active">▶ معمولی</button>
     <button onclick="setSpeed(1.3)" data-speed="1.3">🐇 سریع</button>
+  </div>
+  <div class="tts-help" id="ttsHelp">
+    <h4>⚠️ برای فعال‌کردن صدا:</h4>
+    <ol>
+      <li>برو به <strong>تنظیمات گوشی</strong></li>
+      <li><strong>زبان و ورودی</strong> → <strong>تبدیل متن به گفتار</strong></li>
+      <li>مطمئن شو <strong>Google Text-to-Speech</strong> نصب و فعاله</li>
+      <li>روی <strong>زبان</strong> کلیک کن → <strong>فارسی</strong> رو نصب کن</li>
+      <li>اپ رو ببند و دوباره باز کن</li>
+    </ol>
+    <p style="margin-top:8px;color:rgba(255,255,255,.7);font-size:11px">💡 اگه Google TTS نصب نیست، از APKMirror دانلود کن:<br><code>apkmirror.com/apk/google-inc/google-text-to-speech-engine/</code></p>
   </div>
 </div>
 
@@ -237,49 +222,46 @@ var CHAPTERS = window.SAFETY_BOOK || [];
 var currentIdx = -1;
 var fontSizeLevels = [14, 16, 18, 20];
 var currentFont = 1;
-var STORAGE_KEY = 'safety_book_state_v6';
+var STORAGE_KEY = 'safety_book_state_v7';
 
 /* ===== تشخیص TTS ===== */
 var hasAndroidTTS = false;
-try {
-  if (typeof AndroidTTS !== 'undefined' && AndroidTTS !== null) {
-    if (typeof AndroidTTS.isAvailable === 'function') {
-      hasAndroidTTS = AndroidTTS.isAvailable();
-    } else {
-      hasAndroidTTS = true;
-    }
-  }
-} catch(e) { hasAndroidTTS = false; }
-
 var hasWebTTS = ('speechSynthesis' in window) && ('SpeechSynthesisUtterance' in window);
-var hasESpeak = false;
-var espeakInstance = null;
-var espeakReady = false;
-var ttsAvailable = hasAndroidTTS || hasWebTTS;
+var androidIsReady = false;
+var ttsAvailable = false;
+var useAndroid = false;
+var useWeb = false;
 
-/* ===== eSpeak-NG WebAssembly ===== */
-function initESpeak() {
-  if (typeof eSpeakNG === 'undefined') {
-    console.log('eSpeakNG not loaded');
-    return;
-  }
+function checkAndroidTTS() {
   try {
-    eSpeakNG({
-      locateFile: function(path) {
-        return path;
+    if (typeof AndroidTTS !== 'undefined' && AndroidTTS !== null) {
+      if (typeof AndroidTTS.isAvailable === 'function') {
+        hasAndroidTTS = AndroidTTS.isAvailable();
+      } else {
+        hasAndroidTTS = true;
       }
-    }).then(function(instance) {
-      espeakInstance = instance;
-      espeakReady = true;
-      hasESpeak = true;
-      ttsAvailable = true;
-      console.log('✅ eSpeak-NG ready');
-      try { instance.set_voice('fa'); } catch(e) {}
-    }).catch(function(err) {
-      console.warn('eSpeak-NG init failed:', err);
-    });
-  } catch(e) {
-    console.warn('eSpeak setup error:', e);
+    }
+  } catch(e) { hasAndroidTTS = false; }
+}
+
+function updateTTSStatus() {
+  checkAndroidTTS();
+  // انتخاب بهترین موتور موجود
+  if (hasAndroidTTS) {
+    useAndroid = true;
+    useWeb = false;
+    ttsAvailable = true;
+    return 'android';
+  } else if (hasWebTTS) {
+    useAndroid = false;
+    useWeb = true;
+    ttsAvailable = true;
+    return 'web';
+  } else {
+    useAndroid = false;
+    useWeb = false;
+    ttsAvailable = false;
+    return 'none';
   }
 }
 
@@ -287,24 +269,18 @@ var audio = {
   speaking: false,
   paused: false,
   speed: 1.0,
-  utterance: null,
-  sourceNode: null,
-  audioCtx: null,
   chunks: [],
   currentChunk: 0,
-  timer: null
+  timer: null,
+  utterance: null
 };
 
 function extractReadableText(html) {
   var tmp = document.createElement('div');
   tmp.innerHTML = html;
   var tables = tmp.querySelectorAll('table');
-  for (var i = 0; i < tables.length; i++) {
-    tables[i].parentNode.removeChild(tables[i]);
-  }
-  var text = tmp.textContent || tmp.innerText || '';
-  text = text.replace(/\s+/g, ' ').trim();
-  return text;
+  for (var i = 0; i < tables.length; i++) tables[i].parentNode.removeChild(tables[i]);
+  return (tmp.textContent || tmp.innerText || '').replace(/\s+/g, ' ').trim();
 }
 
 function splitIntoChunks(text, maxLen) {
@@ -324,116 +300,68 @@ function splitIntoChunks(text, maxLen) {
           if ((sub + ' ' + words[k]).length > maxLen) {
             if (sub) chunks.push(sub.trim());
             sub = words[k];
-          } else {
-            sub = sub ? sub + ' ' + words[k] : words[k];
-          }
+          } else sub = sub ? sub + ' ' + words[k] : words[k];
         }
         if (sub) current = sub;
-      } else {
-        current = s;
-      }
-    } else {
-      current = current ? current + ' ' + s : s;
-    }
+      } else current = s;
+    } else current = current ? current + ' ' + s : s;
   }
   if (current) chunks.push(current.trim());
   return chunks;
 }
 
-function speakESpeak(text, onEnd) {
-  if (!espeakReady || !espeakInstance) {
-    if (onEnd) onEnd();
-    return;
-  }
+function speakAndroid(text, onEnd) {
   try {
-    espeakInstance.set_rate(175 * audio.speed);
-    var result = espeakInstance.synthesize(text, 'fa');
-    if (result && result.length > 0) {
-      if (!audio.audioCtx) {
-        audio.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      var ctx = audio.audioCtx;
-      var buffer = ctx.createBuffer(1, result.length, 22050);
-      buffer.copyToChannel(result, 0);
-      var source = ctx.createBufferSource();
-      source.buffer = buffer;
-      source.connect(ctx.destination);
-      source.onended = function() {
-        audio.sourceNode = null;
-        if (onEnd && audio.speaking && !audio.paused) onEnd();
-      };
-      audio.sourceNode = source;
-      source.start();
-    } else {
-      if (onEnd) onEnd();
-    }
-  } catch(e) {
-    console.warn('eSpeak speak error:', e);
-    if (onEnd) onEnd();
-  }
-}
-
-function speakWithAndroid(text, onEnd) {
-  try {
-    if (typeof AndroidTTS.speak === 'function') {
-      AndroidTTS.speak(text);
-    }
+    if (typeof AndroidTTS.speak === 'function') AndroidTTS.speak(text);
+    else { if (onEnd) onEnd(); return; }
   } catch(e) { if (onEnd) onEnd(); return; }
+  // تایمر پشتیبان
   audio.timer = setTimeout(function() {
     if (onEnd && audio.speaking && !audio.paused) onEnd();
-  }, Math.max(3000, (text.length / (10 * audio.speed)) * 1000 + 1500));
+  }, Math.max(4000, (text.length / (8 * audio.speed)) * 1000 + 2000));
 }
 
-function speakWithWebTTS(text, onEnd) {
+function speakWeb(text, onEnd) {
   var u = new SpeechSynthesisUtterance(text);
   u.lang = 'fa-IR';
   u.rate = audio.speed;
   u.pitch = 1.0;
-  u.onend = function() {
-    if (onEnd && audio.speaking && !audio.paused) onEnd();
-  };
-  u.onerror = function() {
-    if (onEnd && audio.speaking && !audio.paused) onEnd();
-  };
+  u.onend = function() { if (onEnd && audio.speaking && !audio.paused) onEnd(); };
+  u.onerror = function() { if (onEnd && audio.speaking && !audio.paused) onEnd(); };
   audio.utterance = u;
   window.speechSynthesis.speak(u);
 }
 
 function speakChunk(text, onEnd) {
-  if (espeakReady) {
-    speakESpeak(text, onEnd);
-  } else if (hasAndroidTTS) {
-    speakWithAndroid(text, onEnd);
-  } else if (hasWebTTS) {
-    speakWithWebTTS(text, onEnd);
-  } else if (onEnd) {
-    onEnd();
-  }
+  if (useAndroid) speakAndroid(text, onEnd);
+  else if (useWeb) speakWeb(text, onEnd);
+  else if (onEnd) onEnd();
 }
 
 function startAudio() {
+  var status = updateTTSStatus();
   if (!ttsAvailable) {
-    alert('خواندن صوتی پشتیبانی نمی‌شود.');
+    showHelp(true);
+    setAudioStatus('❌ خواندن صوتی پشتیبانی نمی‌شود');
     return;
   }
   if (currentIdx < 0 || currentIdx >= CHAPTERS.length) {
-    alert('اول یک فصل را باز کن.');
+    setAudioStatus('اول یک فصل را باز کن');
     return;
   }
+  showHelp(false);
   var ch = CHAPTERS[currentIdx];
   var text = extractReadableText(ch.content);
   audio.chunks = splitIntoChunks(text, 150);
   audio.currentChunk = 0;
   audio.speaking = true;
   audio.paused = false;
+  document.getElementById('playBtn').textContent = '⏸';
   speakCurrent();
 }
 
 function speakCurrent() {
-  if (!audio.speaking || audio.currentChunk >= audio.chunks.length) {
-    finishAudio();
-    return;
-  }
+  if (!audio.speaking || audio.currentChunk >= audio.chunks.length) { finishAudio(); return; }
   var chunk = audio.chunks[audio.currentChunk];
   setAudioStatus('در حال خواندن... (' + Math.round((audio.currentChunk / audio.chunks.length) * 100) + '٪)');
   updateAudioProgress();
@@ -445,17 +373,13 @@ function speakCurrent() {
 }
 
 function togglePlay() {
-  if (!ttsAvailable) {
-    alert('خواندن صوتی پشتیبانی نمی‌شود.');
-    return;
-  }
+  if (!ttsAvailable) { startAudio(); return; }
   if (audio.chunks.length === 0) { startAudio(); return; }
   if (audio.speaking && !audio.paused) {
     audio.paused = true;
-    if (audio.sourceNode) { try { audio.sourceNode.stop(); } catch(e) {} audio.sourceNode = null; }
     if (audio.timer) clearTimeout(audio.timer);
-    if (hasAndroidTTS && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
-    if (hasWebTTS) window.speechSynthesis.pause();
+    if (useAndroid && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
+    if (useWeb) window.speechSynthesis.pause();
     setAudioStatus('⏸ متوقف');
     document.getElementById('playBtn').textContent = '▶';
   } else if (audio.paused) {
@@ -463,7 +387,7 @@ function togglePlay() {
     audio.speaking = true;
     document.getElementById('playBtn').textContent = '⏸';
     speakCurrent();
-  } else { startAudio(); }
+  }
 }
 
 function stopAudio() {
@@ -472,15 +396,15 @@ function stopAudio() {
   audio.chunks = [];
   audio.currentChunk = 0;
   if (audio.timer) clearTimeout(audio.timer);
-  if (audio.sourceNode) { try { audio.sourceNode.stop(); } catch(e) {} audio.sourceNode = null; }
-  if (hasAndroidTTS && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
-  if (hasWebTTS) window.speechSynthesis.cancel();
+  if (useAndroid && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
+  if (useWeb) window.speechSynthesis.cancel();
   setAudioStatus('برای شروع، دکمهٔ پخش را بزنید');
-  document.getElementById('playBtn').textContent = '▶';
+  var btn = document.getElementById('playBtn');
+  if (btn) btn.textContent = '▶';
   document.getElementById('audioProgress').style.width = '0%';
 }
 
-function restartAudio() { stopAudio(); setTimeout(startAudio, 200); }
+function restartAudio() { stopAudio(); setTimeout(startAudio, 300); }
 function finishAudio() {
   audio.speaking = false;
   audio.paused = false;
@@ -495,14 +419,12 @@ function setSpeed(s) {
     btns[i].classList.remove('active');
     if (parseFloat(btns[i].getAttribute('data-speed')) === s) btns[i].classList.add('active');
   }
-  if (espeakReady && espeakInstance) { try { espeakInstance.set_rate(175 * s); } catch(e) {} }
-  if (hasAndroidTTS && AndroidTTS.setRate) { try { AndroidTTS.setRate(s); } catch(e) {} }
+  if (useAndroid && AndroidTTS.setRate) { try { AndroidTTS.setRate(s); } catch(e) {} }
   if (audio.speaking && !audio.paused) {
     var wasChunk = audio.currentChunk;
-    if (audio.sourceNode) { try { audio.sourceNode.stop(); } catch(e) {} audio.sourceNode = null; }
     if (audio.timer) clearTimeout(audio.timer);
-    if (hasAndroidTTS && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
-    if (hasWebTTS) window.speechSynthesis.cancel();
+    if (useAndroid && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
+    if (useWeb) window.speechSynthesis.cancel();
     audio.currentChunk = wasChunk;
     setTimeout(speakCurrent, 200);
   }
@@ -513,7 +435,30 @@ function toggleAudio() {
   var btn = document.getElementById('audioBtn');
   var open = panel.classList.toggle('open');
   btn.classList.toggle('active', open);
-  if (!open) stopAudio();
+  if (open) {
+    // وقتی پنل باز می‌شه، وضعیت رو چک کن
+    var status = updateTTSStatus();
+    if (status === 'none') {
+      showHelp(true);
+      setAudioStatus('❌ خواندن صوتی پشتیبانی نمی‌شود');
+      document.getElementById('audioControls').style.display = 'none';
+      document.getElementById('speedRow').style.display = 'none';
+    } else {
+      showHelp(false);
+      setAudioStatus('برای شروع، دکمهٔ پخش را بزنید');
+      document.getElementById('audioControls').style.display = 'flex';
+      document.getElementById('speedRow').style.display = 'flex';
+    }
+  } else {
+    stopAudio();
+  }
+}
+
+function showHelp(show) {
+  var el = document.getElementById('ttsHelp');
+  if (!el) return;
+  if (show) el.classList.add('show');
+  else el.classList.remove('show');
 }
 
 function updateAudioProgress() {
@@ -528,10 +473,7 @@ function setAudioStatus(msg) {
 }
 
 function loadState() {
-  try {
-    var s = localStorage.getItem(STORAGE_KEY);
-    if (s) return JSON.parse(s);
-  } catch(e) {}
+  try { var s = localStorage.getItem(STORAGE_KEY); if (s) return JSON.parse(s); } catch(e) {}
   return { idx: -1, theme: 'light', font: 1, speed: 1.0 };
 }
 function saveState() {
@@ -592,15 +534,12 @@ function renderChapter(idx) {
   var ch = CHAPTERS[idx];
   document.getElementById('topTitle').textContent = ch.title;
   var html = '<h1>' + ch.title + '</h1>';
-  if (ch.subtitle) {
-    html += '<p style="text-align:center;color:var(--muted);margin-top:-10px;margin-bottom:20px;font-size:12.5px">' + ch.subtitle + '</p>';
-  }
+  if (ch.subtitle) html += '<p style="text-align:center;color:var(--muted);margin-top:-10px;margin-bottom:20px;font-size:12.5px">' + ch.subtitle + '</p>';
   html += ch.content;
   document.getElementById('content').innerHTML = html;
   document.getElementById('prevBtn').disabled = false;
   document.getElementById('nextBtn').disabled = (idx >= CHAPTERS.length - 1);
-  var pct = ((idx + 1) / CHAPTERS.length) * 100;
-  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressFill').style.width = ((idx + 1) / CHAPTERS.length * 100) + '%';
   updateDrawer();
   window.scrollTo(0, 0);
   saveState();
@@ -617,11 +556,9 @@ function goPrev() {
 }
 
 function buildDrawerList() {
-  var html = '<div class="drawer-item" onclick="goToChapter(-1)" data-idx="-1">' +
-    '<span class="num">🏠</span> معرفی کتاب</div>';
+  var html = '<div class="drawer-item" onclick="goToChapter(-1)" data-idx="-1"><span class="num">🏠</span> معرفی کتاب</div>';
   for (var i = 0; i < CHAPTERS.length; i++) {
-    html += '<div class="drawer-item" onclick="goToChapter(' + i + ')" data-idx="' + i + '">' +
-      '<span class="num">' + (i + 1) + '</span> ' + CHAPTERS[i].title + '</div>';
+    html += '<div class="drawer-item" onclick="goToChapter(' + i + ')" data-idx="' + i + '"><span class="num">' + (i + 1) + '</span> ' + CHAPTERS[i].title + '</div>';
   }
   document.getElementById('drawerList').innerHTML = html;
 }
@@ -632,29 +569,12 @@ function updateDrawer() {
     if (parseInt(items[i].getAttribute('data-idx')) === currentIdx) items[i].classList.add('active');
   }
 }
-function openDrawer() {
-  document.getElementById('drawer').classList.add('open');
-  document.getElementById('backdrop').classList.add('open');
-}
-function closeDrawer() {
-  document.getElementById('drawer').classList.remove('open');
-  document.getElementById('backdrop').classList.remove('open');
-}
+function openDrawer() { document.getElementById('drawer').classList.add('open'); document.getElementById('backdrop').classList.add('open'); }
+function closeDrawer() { document.getElementById('drawer').classList.remove('open'); document.getElementById('backdrop').classList.remove('open'); }
 
-function openSearch() {
-  document.getElementById('searchOverlay').classList.add('open');
-  setTimeout(function(){ document.getElementById('searchInput').focus(); }, 300);
-}
-function closeSearch() {
-  document.getElementById('searchOverlay').classList.remove('open');
-  document.getElementById('searchResults').innerHTML = '';
-  document.getElementById('searchInput').value = '';
-}
-function stripHtml(html) {
-  var tmp = document.createElement('div');
-  tmp.innerHTML = html;
-  return tmp.textContent || tmp.innerText || '';
-}
+function openSearch() { document.getElementById('searchOverlay').classList.add('open'); setTimeout(function(){ document.getElementById('searchInput').focus(); }, 300); }
+function closeSearch() { document.getElementById('searchOverlay').classList.remove('open'); document.getElementById('searchResults').innerHTML = ''; document.getElementById('searchInput').value = ''; }
+function stripHtml(html) { var tmp = document.createElement('div'); tmp.innerHTML = html; return tmp.textContent || tmp.innerText || ''; }
 function doSearch(query) {
   var results = document.getElementById('searchResults');
   query = (query || '').trim();
@@ -666,86 +586,52 @@ function doSearch(query) {
     var t = text.toLowerCase();
     var pos = t.indexOf(q);
     if (pos >= 0) {
-      var start = Math.max(0, pos - 60);
-      var end = Math.min(text.length, pos + 100);
+      var start = Math.max(0, pos - 60), end = Math.min(text.length, pos + 100);
       var snippet = text.substring(start, end);
       var before = snippet.substring(0, pos - start);
       var match = snippet.substring(pos - start, pos - start + query.length);
       var after = snippet.substring(pos - start + query.length);
-      found.push({
-        idx: i,
-        title: CHAPTERS[i].title,
-        snippet: '...' + escapeHtml(before) + '<mark>' + escapeHtml(match) + '</mark>' + escapeHtml(after) + '...'
-      });
+      found.push({ idx: i, title: CHAPTERS[i].title, snippet: '...' + escapeHtml(before) + '<mark>' + escapeHtml(match) + '</mark>' + escapeHtml(after) + '...' });
     }
   }
-  if (found.length === 0) {
-    results.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:13px">نتیجه‌ای یافت نشد.</div>';
-    return;
-  }
+  if (found.length === 0) { results.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:13px">نتیجه‌ای یافت نشد.</div>'; return; }
   var html = '<div style="font-size:12px;color:var(--muted);margin-bottom:10px">' + found.length + ' نتیجه یافت شد</div>';
   for (var j = 0; j < found.length; j++) {
-    html += '<div class="result-item" onclick="goToChapter(' + found[j].idx + ')">' +
-      '<div class="result-title">' + escapeHtml(found[j].title) + '</div>' +
-      '<div class="result-snippet">' + found[j].snippet + '</div></div>';
+    html += '<div class="result-item" onclick="goToChapter(' + found[j].idx + ')"><div class="result-title">' + escapeHtml(found[j].title) + '</div><div class="result-snippet">' + found[j].snippet + '</div></div>';
   }
   results.innerHTML = html;
 }
-function escapeHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
+function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toggleTheme() { var isDark = document.documentElement.classList.toggle('dark'); document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙'; saveState(); }
 
-function toggleTheme() {
-  var isDark = document.documentElement.classList.toggle('dark');
-  document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
-  saveState();
-}
-
-/* ===== راه‌اندازی ===== */
 (function init() {
   var s = loadState();
-  if (s.theme === 'dark') {
-    document.documentElement.classList.add('dark');
-    setTimeout(function(){ document.getElementById('themeBtn').textContent = '☀️'; }, 0);
-  }
-  if (s.font !== undefined && s.font !== 1) {
-    currentFont = s.font;
-    document.documentElement.style.setProperty('--font-size', fontSizeLevels[currentFont] + 'px');
-  }
+  if (s.theme === 'dark') { document.documentElement.classList.add('dark'); setTimeout(function(){ document.getElementById('themeBtn').textContent = '☀️'; }, 0); }
+  if (s.font !== undefined && s.font !== 1) { currentFont = s.font; document.documentElement.style.setProperty('--font-size', fontSizeLevels[currentFont] + 'px'); }
   if (s.speed) audio.speed = s.speed;
-
   buildDrawerList();
-
-  // راه‌اندازی eSpeak-NG (بارگذاری از assets)
-  var script = document.createElement('script');
-  script.src = 'espeak-ng.js';
-  script.onload = function() {
-    // بعد از لود شدن اسکریپت، eSpeakNG رو راه‌اندازی کن
-    setTimeout(function() {
-      if (typeof eSpeakNG !== 'undefined') {
-        initESpeak();
-      } else {
-        console.log('eSpeakNG نه لود شد، از Android TTS استفاده می‌کنیم');
-      }
-    }, 100);
-  };
-  script.onerror = function() {
-    console.log('espeak-ng.js لود نشد، از TTS پیش‌فرض استفاده می‌شود');
-  };
-  document.head.appendChild(script);
-
+  // بررسی TTS با کمی تأخیر (تا AndroidTTS آماده بشه)
+  setTimeout(function() {
+    updateTTSStatus();
+    if (hasAndroidTTS) {
+      var btn = document.getElementById('audioBtn');
+      if (btn) btn.style.opacity = '1';
+    } else if (hasWebTTS) {
+      var btn2 = document.getElementById('audioBtn');
+      if (btn2) btn2.style.opacity = '1';
+    } else {
+      var btn3 = document.getElementById('audioBtn');
+      if (btn3) btn3.style.opacity = '0.4';
+    }
+  }, 1500);
   if (CHAPTERS.length === 0) {
     document.getElementById('content').innerHTML = '<div class="loading"><div class="spinner"></div>در حال بارگذاری محتوا...</div>';
-  } else if (s.idx >= 0 && s.idx < CHAPTERS.length) {
-    renderChapter(s.idx);
-  } else {
-    renderCover();
-  }
+  } else if (s.idx >= 0 && s.idx < CHAPTERS.length) { renderChapter(s.idx); }
+  else { renderCover(); }
   window.addEventListener('beforeunload', function() {
     if (audio.timer) clearTimeout(audio.timer);
-    if (audio.sourceNode) { try { audio.sourceNode.stop(); } catch(e) {} }
-    if (hasAndroidTTS && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
-    if (hasWebTTS) window.speechSynthesis.cancel();
+    if (useAndroid && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
+    if (useWeb) window.speechSynthesis.cancel();
     saveState();
   });
 })();
