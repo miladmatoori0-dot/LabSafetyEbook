@@ -1,7 +1,9 @@
 <resources>
     <style name="Theme.SafetyBook" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:statusBarColor">#0d3b2e</item>
-        <item name="android:navigationBarColor">#0d3b2e</item>
-        <item name="android:windowBackground">#0d3b2e</item>
+        <item name="android:statusBarColor">#f0f9f4</item>
+        <item name="android:navigationBarColor">#f0f9f4</item>
+        <item name="android:windowBackground">#f0f9f4</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 </resources>
