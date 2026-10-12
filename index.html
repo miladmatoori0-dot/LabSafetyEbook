@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#0d3b2e">
-<title>ایمنی در آزمایشگاه‌های نفت</title>
+<meta name="theme-color" content="#f0f9f4">
+<title>put book HSE</title>
 <style>
 :root{
   --bg:#f5faf7;--card:#ffffff;--card2:#e8f5ee;
@@ -120,6 +120,34 @@ mark{background:rgba(255,183,3,.5);color:inherit;padding:0 2px;border-radius:3px
 .cover-title{font-size:23px;font-weight:bold;color:var(--accent2);margin-bottom:8px;line-height:1.5}
 .cover-sub{font-size:13px;color:var(--muted);margin-bottom:6px}
 .cover-org{display:inline-block;margin-top:16px;padding:7px 14px;background:var(--card2);color:var(--accent2);border-radius:20px;font-size:12px;font-weight:bold;border:1px solid var(--accent)}
+.cover-author{
+  margin:20px auto;
+  padding:14px 20px;
+  background:var(--card);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  display:inline-block;
+  text-align:center;
+  border:2px solid var(--accent);
+  min-width:260px;
+}
+.cover-author .label{
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:6px;
+  display:block;
+}
+.cover-author .name{
+  font-size:15px;
+  font-weight:bold;
+  color:var(--accent2);
+  margin-bottom:4px;
+}
+.cover-author .role{
+  font-size:12px;
+  color:var(--text);
+  line-height:1.6;
+}
 .cover-desc{margin:24px 0;padding:16px;background:var(--card);border-radius:12px;font-size:13px;color:var(--muted);line-height:1.9;text-align:right;border-right:4px solid var(--accent)}
 .cover-btn{display:inline-block;width:100%;max-width:280px;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:bold;font-family:inherit;cursor:pointer;margin-top:8px;box-shadow:0 8px 24px rgba(46,204,113,.3)}
 .cover-btn:active{transform:scale(.97)}
@@ -139,7 +167,7 @@ mark{background:rgba(255,183,3,.5);color:inherit;padding:0 2px;border-radius:3px
 
 <div class="topbar">
   <button class="icon-btn" onclick="openDrawer()" title="فهرست">☰</button>
-  <div class="title" id="topTitle">ایمنی در آزمایشگاه‌های نفت</div>
+  <div class="title" id="topTitle">put book HSE</div>
   <button class="icon-btn" onclick="openSearch()" title="جستجو">🔍</button>
   <button class="icon-btn" onclick="toggleAudio()" id="audioBtn" title="صدا">🔊</button>
   <button class="icon-btn" onclick="toggleTheme()" title="حالت شب" id="themeBtn">🌙</button>
@@ -179,7 +207,7 @@ mark{background:rgba(255,183,3,.5);color:inherit;padding:0 2px;border-radius:3px
 <div class="drawer" id="drawer">
   <div class="drawer-head">
     <h3>📚 فهرست مطالب</h3>
-    <p id="drawerSubtitle">ایمنی در آزمایشگاه‌های نفت</p>
+    <p id="drawerSubtitle">put book HSE</p>
   </div>
   <div class="drawer-list" id="drawerList"></div>
 </div>
@@ -209,7 +237,7 @@ var CHAPTERS = window.SAFETY_BOOK || [];
 var currentIdx = -1;
 var fontSizeLevels = [14, 16, 18, 20];
 var currentFont = 1;
-var STORAGE_KEY = 'safety_book_state_v3';
+var STORAGE_KEY = 'safety_book_state_v6';
 
 /* ===== تشخیص TTS ===== */
 var hasAndroidTTS = false;
@@ -221,22 +249,50 @@ try {
       hasAndroidTTS = true;
     }
   }
-} catch(e) {
-  hasAndroidTTS = false;
-}
+} catch(e) { hasAndroidTTS = false; }
+
 var hasWebTTS = ('speechSynthesis' in window) && ('SpeechSynthesisUtterance' in window);
+var hasESpeak = false;
+var espeakInstance = null;
+var espeakReady = false;
 var ttsAvailable = hasAndroidTTS || hasWebTTS;
 
-/* ===== حالت صوتی ===== */
+/* ===== eSpeak-NG WebAssembly ===== */
+function initESpeak() {
+  if (typeof eSpeakNG === 'undefined') {
+    console.log('eSpeakNG not loaded');
+    return;
+  }
+  try {
+    eSpeakNG({
+      locateFile: function(path) {
+        return path;
+      }
+    }).then(function(instance) {
+      espeakInstance = instance;
+      espeakReady = true;
+      hasESpeak = true;
+      ttsAvailable = true;
+      console.log('✅ eSpeak-NG ready');
+      try { instance.set_voice('fa'); } catch(e) {}
+    }).catch(function(err) {
+      console.warn('eSpeak-NG init failed:', err);
+    });
+  } catch(e) {
+    console.warn('eSpeak setup error:', e);
+  }
+}
+
 var audio = {
   speaking: false,
   paused: false,
   speed: 1.0,
   utterance: null,
+  sourceNode: null,
+  audioCtx: null,
   chunks: [],
   currentChunk: 0,
-  timer: null,
-  useAndroid: hasAndroidTTS
+  timer: null
 };
 
 function extractReadableText(html) {
@@ -252,7 +308,7 @@ function extractReadableText(html) {
 }
 
 function splitIntoChunks(text, maxLen) {
-  maxLen = maxLen || 200;
+  maxLen = maxLen || 150;
   var sentences = text.split(/(?<=[.!?؟।])\s+/);
   var chunks = [];
   var current = '';
@@ -284,35 +340,80 @@ function splitIntoChunks(text, maxLen) {
   return chunks;
 }
 
-function speakChunk(text, onEnd) {
-  if (audio.useAndroid) {
-    try {
+function speakESpeak(text, onEnd) {
+  if (!espeakReady || !espeakInstance) {
+    if (onEnd) onEnd();
+    return;
+  }
+  try {
+    espeakInstance.set_rate(175 * audio.speed);
+    var result = espeakInstance.synthesize(text, 'fa');
+    if (result && result.length > 0) {
+      if (!audio.audioCtx) {
+        audio.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      var ctx = audio.audioCtx;
+      var buffer = ctx.createBuffer(1, result.length, 22050);
+      buffer.copyToChannel(result, 0);
+      var source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.connect(ctx.destination);
+      source.onended = function() {
+        audio.sourceNode = null;
+        if (onEnd && audio.speaking && !audio.paused) onEnd();
+      };
+      audio.sourceNode = source;
+      source.start();
+    } else {
+      if (onEnd) onEnd();
+    }
+  } catch(e) {
+    console.warn('eSpeak speak error:', e);
+    if (onEnd) onEnd();
+  }
+}
+
+function speakWithAndroid(text, onEnd) {
+  try {
+    if (typeof AndroidTTS.speak === 'function') {
       AndroidTTS.speak(text);
-    } catch(e) {}
-    var charsPerSec = 15 * audio.speed;
-    var estimatedMs = (text.length / charsPerSec) * 1000 + 500;
-    audio.timer = setTimeout(function() {
-      if (onEnd && audio.speaking && !audio.paused) onEnd();
-    }, estimatedMs);
+    }
+  } catch(e) { if (onEnd) onEnd(); return; }
+  audio.timer = setTimeout(function() {
+    if (onEnd && audio.speaking && !audio.paused) onEnd();
+  }, Math.max(3000, (text.length / (10 * audio.speed)) * 1000 + 1500));
+}
+
+function speakWithWebTTS(text, onEnd) {
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = 'fa-IR';
+  u.rate = audio.speed;
+  u.pitch = 1.0;
+  u.onend = function() {
+    if (onEnd && audio.speaking && !audio.paused) onEnd();
+  };
+  u.onerror = function() {
+    if (onEnd && audio.speaking && !audio.paused) onEnd();
+  };
+  audio.utterance = u;
+  window.speechSynthesis.speak(u);
+}
+
+function speakChunk(text, onEnd) {
+  if (espeakReady) {
+    speakESpeak(text, onEnd);
+  } else if (hasAndroidTTS) {
+    speakWithAndroid(text, onEnd);
   } else if (hasWebTTS) {
-    var u = new SpeechSynthesisUtterance(text);
-    u.lang = 'fa-IR';
-    u.rate = audio.speed;
-    u.pitch = 1.0;
-    u.onend = function() {
-      if (onEnd && audio.speaking && !audio.paused) onEnd();
-    };
-    u.onerror = function() {
-      if (onEnd && audio.speaking && !audio.paused) onEnd();
-    };
-    audio.utterance = u;
-    window.speechSynthesis.speak(u);
+    speakWithWebTTS(text, onEnd);
+  } else if (onEnd) {
+    onEnd();
   }
 }
 
 function startAudio() {
   if (!ttsAvailable) {
-    alert('خواندن صوتی پشتیبانی نمی‌شود. لطفاً Google Text-to-Speech را نصب کنید.');
+    alert('خواندن صوتی پشتیبانی نمی‌شود.');
     return;
   }
   if (currentIdx < 0 || currentIdx >= CHAPTERS.length) {
@@ -321,7 +422,7 @@ function startAudio() {
   }
   var ch = CHAPTERS[currentIdx];
   var text = extractReadableText(ch.content);
-  audio.chunks = splitIntoChunks(text, 200);
+  audio.chunks = splitIntoChunks(text, 150);
   audio.currentChunk = 0;
   audio.speaking = true;
   audio.paused = false;
@@ -348,18 +449,13 @@ function togglePlay() {
     alert('خواندن صوتی پشتیبانی نمی‌شود.');
     return;
   }
-  if (audio.chunks.length === 0) {
-    startAudio();
-    return;
-  }
+  if (audio.chunks.length === 0) { startAudio(); return; }
   if (audio.speaking && !audio.paused) {
     audio.paused = true;
-    if (audio.useAndroid) {
-      try { AndroidTTS.stop(); } catch(e) {}
-      if (audio.timer) clearTimeout(audio.timer);
-    } else if (hasWebTTS) {
-      window.speechSynthesis.pause();
-    }
+    if (audio.sourceNode) { try { audio.sourceNode.stop(); } catch(e) {} audio.sourceNode = null; }
+    if (audio.timer) clearTimeout(audio.timer);
+    if (hasAndroidTTS && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
+    if (hasWebTTS) window.speechSynthesis.pause();
     setAudioStatus('⏸ متوقف');
     document.getElementById('playBtn').textContent = '▶';
   } else if (audio.paused) {
@@ -367,9 +463,7 @@ function togglePlay() {
     audio.speaking = true;
     document.getElementById('playBtn').textContent = '⏸';
     speakCurrent();
-  } else {
-    startAudio();
-  }
+  } else { startAudio(); }
 }
 
 function stopAudio() {
@@ -378,21 +472,15 @@ function stopAudio() {
   audio.chunks = [];
   audio.currentChunk = 0;
   if (audio.timer) clearTimeout(audio.timer);
-  if (audio.useAndroid) {
-    try { AndroidTTS.stop(); } catch(e) {}
-  } else if (hasWebTTS) {
-    window.speechSynthesis.cancel();
-  }
+  if (audio.sourceNode) { try { audio.sourceNode.stop(); } catch(e) {} audio.sourceNode = null; }
+  if (hasAndroidTTS && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
+  if (hasWebTTS) window.speechSynthesis.cancel();
   setAudioStatus('برای شروع، دکمهٔ پخش را بزنید');
   document.getElementById('playBtn').textContent = '▶';
   document.getElementById('audioProgress').style.width = '0%';
 }
 
-function restartAudio() {
-  stopAudio();
-  setTimeout(startAudio, 200);
-}
-
+function restartAudio() { stopAudio(); setTimeout(startAudio, 200); }
 function finishAudio() {
   audio.speaking = false;
   audio.paused = false;
@@ -405,21 +493,16 @@ function setSpeed(s) {
   var btns = document.querySelectorAll('.speed-row button');
   for (var i = 0; i < btns.length; i++) {
     btns[i].classList.remove('active');
-    if (parseFloat(btns[i].getAttribute('data-speed')) === s) {
-      btns[i].classList.add('active');
-    }
+    if (parseFloat(btns[i].getAttribute('data-speed')) === s) btns[i].classList.add('active');
   }
-  if (audio.useAndroid) {
-    try { AndroidTTS.setRate(s); } catch(e) {}
-  }
+  if (espeakReady && espeakInstance) { try { espeakInstance.set_rate(175 * s); } catch(e) {} }
+  if (hasAndroidTTS && AndroidTTS.setRate) { try { AndroidTTS.setRate(s); } catch(e) {} }
   if (audio.speaking && !audio.paused) {
     var wasChunk = audio.currentChunk;
-    if (audio.useAndroid) {
-      try { AndroidTTS.stop(); } catch(e) {}
-    } else if (hasWebTTS) {
-      window.speechSynthesis.cancel();
-    }
+    if (audio.sourceNode) { try { audio.sourceNode.stop(); } catch(e) {} audio.sourceNode = null; }
     if (audio.timer) clearTimeout(audio.timer);
+    if (hasAndroidTTS && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
+    if (hasWebTTS) window.speechSynthesis.cancel();
     audio.currentChunk = wasChunk;
     setTimeout(speakCurrent, 200);
   }
@@ -430,9 +513,7 @@ function toggleAudio() {
   var btn = document.getElementById('audioBtn');
   var open = panel.classList.toggle('open');
   btn.classList.toggle('active', open);
-  if (!open) {
-    stopAudio();
-  }
+  if (!open) stopAudio();
 }
 
 function updateAudioProgress() {
@@ -467,13 +548,18 @@ function saveState() {
 function renderCover() {
   stopAudio();
   currentIdx = -1;
-  document.getElementById('topTitle').textContent = 'معرفی کتاب';
+  document.getElementById('topTitle').textContent = 'put book HSE';
   document.getElementById('content').innerHTML =
     '<div class="cover">' +
       '<span class="cover-icon">🦺</span>' +
       '<div class="cover-title">ایمنی در آزمایشگاه‌های نفت</div>' +
       '<div class="cover-sub">دستورالعمل‌های کاربردی در مراکز تحقیقاتی و آزمایشگاهی</div>' +
       '<div class="cover-org">🎓 دانشکده نفت اهواز — واحد HSE</div>' +
+      '<div class="cover-author">' +
+        '<span class="label">گردآورنده</span>' +
+        '<div class="name">محمد امین مطوری</div>' +
+        '<div class="role">کارشناس ایمنی و بهداشت و محیط زیست</div>' +
+      '</div>' +
       '<div class="cover-stats">' +
         '<div class="stat-box"><div class="stat-num">' + CHAPTERS.length + '</div><div class="stat-lbl">فصل</div></div>' +
         '<div class="stat-box"><div class="stat-num">۹۰+</div><div class="stat-lbl">مادهٔ شیمیایی</div></div>' +
@@ -543,9 +629,7 @@ function updateDrawer() {
   var items = document.querySelectorAll('.drawer-item');
   for (var i = 0; i < items.length; i++) {
     items[i].classList.remove('active');
-    if (parseInt(items[i].getAttribute('data-idx')) === currentIdx) {
-      items[i].classList.add('active');
-    }
+    if (parseInt(items[i].getAttribute('data-idx')) === currentIdx) items[i].classList.add('active');
   }
 }
 function openDrawer() {
@@ -617,6 +701,7 @@ function toggleTheme() {
   saveState();
 }
 
+/* ===== راه‌اندازی ===== */
 (function init() {
   var s = loadState();
   if (s.theme === 'dark') {
@@ -628,14 +713,27 @@ function toggleTheme() {
     document.documentElement.style.setProperty('--font-size', fontSizeLevels[currentFont] + 'px');
   }
   if (s.speed) audio.speed = s.speed;
-  if (!ttsAvailable) {
-    var btn = document.getElementById('audioBtn');
-    if (btn) {
-      btn.style.opacity = '0.4';
-      btn.title = 'صدا پشتیبانی نمی‌شود';
-    }
-  }
+
   buildDrawerList();
+
+  // راه‌اندازی eSpeak-NG (بارگذاری از assets)
+  var script = document.createElement('script');
+  script.src = 'espeak-ng.js';
+  script.onload = function() {
+    // بعد از لود شدن اسکریپت، eSpeakNG رو راه‌اندازی کن
+    setTimeout(function() {
+      if (typeof eSpeakNG !== 'undefined') {
+        initESpeak();
+      } else {
+        console.log('eSpeakNG نه لود شد، از Android TTS استفاده می‌کنیم');
+      }
+    }, 100);
+  };
+  script.onerror = function() {
+    console.log('espeak-ng.js لود نشد، از TTS پیش‌فرض استفاده می‌شود');
+  };
+  document.head.appendChild(script);
+
   if (CHAPTERS.length === 0) {
     document.getElementById('content').innerHTML = '<div class="loading"><div class="spinner"></div>در حال بارگذاری محتوا...</div>';
   } else if (s.idx >= 0 && s.idx < CHAPTERS.length) {
@@ -645,11 +743,9 @@ function toggleTheme() {
   }
   window.addEventListener('beforeunload', function() {
     if (audio.timer) clearTimeout(audio.timer);
-    if (audio.useAndroid) {
-      try { AndroidTTS.stop(); } catch(e) {}
-    } else if (hasWebTTS) {
-      window.speechSynthesis.cancel();
-    }
+    if (audio.sourceNode) { try { audio.sourceNode.stop(); } catch(e) {} }
+    if (hasAndroidTTS && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
+    if (hasWebTTS) window.speechSynthesis.cancel();
     saveState();
   });
 })();
