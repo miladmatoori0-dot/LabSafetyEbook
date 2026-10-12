@@ -36,6 +36,8 @@ jobs:
           cp chapters8.js oilquiz/src/main/assets/chapters8.js
           cp chapters9.js oilquiz/src/main/assets/chapters9.js
           cp chapters10.js oilquiz/src/main/assets/chapters10.js
+          cp espeak-ng.js oilquiz/src/main/assets/espeak-ng.js
+          cp espeak-ng.data oilquiz/src/main/assets/espeak-ng.data
           cp AndroidManifest.xml oilquiz/src/main/AndroidManifest.xml
           cp MainActivity.java oilquiz/src/main/java/com/ahvaz/safetybook/MainActivity.java
           cp activity_main.xml oilquiz/src/main/res/layout/activity_main.xml
@@ -48,9 +50,6 @@ jobs:
         run: |
           echo "=== ASSETS ==="
           ls -la oilquiz/src/main/assets/
-          echo ""
-          echo "=== JAVA ==="
-          ls -la oilquiz/src/main/java/com/ahvaz/safetybook/
 
       - name: Create local.properties
         run: echo "sdk.dir=$ANDROID_HOME" > local.properties
@@ -63,6 +62,6 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: LabSafetyEbook-APK
+          name: put-book-HSE-APK
           path: oilquiz/build/outputs/apk/debug/*.apk
           if-no-files-found: warn
