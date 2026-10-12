@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,11 +16,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private WebView webView;
     private TextToSpeech tts;
+    private boolean ttsReady = false;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -29,28 +33,10 @@ public class MainActivity extends AppCompatActivity {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    try {
-                        int result = tts.setLanguage(new Locale("fa", "IR"));
-                        if (result == TextToSpeech.LANG_MISSING_DATA ||
-                            result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                            result = tts.setLanguage(new Locale("ar"));
-                            if (result == TextToSpeech.LANG_MISSING_DATA ||
-                                result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                                tts.setLanguage(Locale.US);
-                            }
-                        }
-                        tts.setSpeechRate(1.0f);
-                        tts.setPitch(1.0f);
-                    } catch (Exception e) {
-                        // ignore
-                    }
-                }
-            }
-        });
+        Log.d("SafetyBook", "=== App started ===");
+
+        // راه‌اندازی TTS پیش‌فرض گوشی (پشتیبان WebAssembly)
+        initDefaultTTS();
 
         webView = findViewById(R.id.webView);
         WebSettings s = webView.getSettings();
@@ -71,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
         webView.addJavascriptInterface(new TTSBridge(), "AndroidTTS");
-
         webView.loadUrl("file:///android_asset/index.html");
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -79,6 +64,62 @@ public class MainActivity extends AppCompatActivity {
             public void handleOnBackPressed() {
                 if (webView.canGoBack()) webView.goBack();
                 else { setEnabled(false); getOnBackPressedDispatcher().onBackPressed(); }
+            }
+        });
+    }
+
+    private void initDefaultTTS() {
+        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    try {
+                        int result = tts.setLanguage(new Locale("fa", "IR"));
+                        if (result == TextToSpeech.LANG_MISSING_DATA ||
+                            result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                            result = tts.setLanguage(new Locale("ar"));
+                            if (result == TextToSpeech.LANG_MISSING_DATA ||
+                                result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                                tts.setLanguage(Locale.US);
+                            }
+                        }
+                        tts.setSpeechRate(1.0f);
+                        tts.setPitch(1.0f);
+
+                        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                            @Override
+                            public void onStart(String utteranceId) {}
+                            @Override
+                            public void onDone(String utteranceId) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (webView != null) {
+                                            webView.evaluateJavascript(
+                                                "if(window.onTTSDone)window.onTTSDone();", null);
+                                        }
+                                    }
+                                });
+                            }
+                            @Override
+                            public void onError(String utteranceId) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (webView != null) {
+                                            webView.evaluateJavascript(
+                                                "if(window.onTTSDone)window.onTTSDone();", null);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+
+                        ttsReady = true;
+                    } catch (Exception e) {
+                        Log.e("SafetyBook", "TTS setup error", e);
+                    }
+                }
             }
         });
     }
@@ -108,7 +149,9 @@ public class MainActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "safety_utt");
                 } else {
-                    tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "safety_utt");
+                    tts.speak(text, TextToSpeech.QUEUE_FLUSH, params);
                 }
             }
         }
@@ -125,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public boolean isAvailable() {
-            return tts != null;
+            return tts != null && ttsReady;
         }
     }
 }
