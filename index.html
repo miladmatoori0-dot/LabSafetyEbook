@@ -116,7 +116,6 @@ mark{background:rgba(255,183,3,.5);color:inherit;padding:0 2px;border-radius:3px
 @keyframes glow { 0% { box-shadow: 0 0 10px rgba(46,204,113,0.2); } 50% { box-shadow: 0 0 40px rgba(46,204,113,0.6), 0 0 10px rgba(46,204,113,0.3); } 100% { box-shadow: 0 0 10px rgba(46,204,113,0.2); } }
 @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes shine { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
 
 .glowing-badge {
   width: 130px; height: 130px; margin: 0 auto 20px;
@@ -181,6 +180,7 @@ mark{background:rgba(255,183,3,.5);color:inherit;padding:0 2px;border-radius:3px
   <div id="content"></div>
 </div>
 
+<!-- پنل TTS (اختیاری) -->
 <div class="audio-panel" id="audioPanel">
   <div class="audio-header">
     <div class="audio-title">🔊 خواندن صوتی</div>
@@ -250,7 +250,7 @@ var CHAPTERS = window.SAFETY_BOOK || [];
 var currentIdx = -1;
 var fontSizeLevels = [14, 16, 18, 20];
 var currentFont = 1;
-var STORAGE_KEY = 'safety_book_state_v8';
+var STORAGE_KEY = 'safety_book_state_v9';
 
 /* ===== TTS ===== */
 var hasAndroidTTS = false;
@@ -424,28 +424,42 @@ function showHelp(show) { var el = document.getElementById('ttsHelp'); if (el) {
 function updateAudioProgress() { if (audio.chunks.length === 0) return; document.getElementById('audioProgress').style.width = ((audio.currentChunk / audio.chunks.length) * 100) + '%'; }
 function setAudioStatus(msg) { var el = document.getElementById('audioStatus'); if (el) el.textContent = msg; }
 
-/* ===== Play Intro MP3 ===== */
+/* ===== پخش فایل‌های MP3 ===== */
+var chapterAudio = null;
+
 function playIntro() {
-  var audio = new Audio('intro.mp3');
+  if (chapterAudio) { chapterAudio.pause(); chapterAudio = null; }
   var btn = event.target;
   var originalText = btn.textContent;
-  audio.play().catch(function(e) { alert('خطا در پخش صدا: ' + e.message); });
+  chapterAudio = new Audio('intro.mp3');
+  chapterAudio.play().catch(function(e) { alert('خطا در پخش صدا: ' + e.message); });
   btn.textContent = '⏸ در حال پخش...';
-  audio.onended = function() { btn.textContent = originalText; };
+  chapterAudio.onended = function() { btn.textContent = originalText; };
 }
 
-/* ===== حالت‌ها ===== */
+function playChapterAudio(idx) {
+  if (chapterAudio) { chapterAudio.pause(); chapterAudio = null; }
+  var file = 'chapter' + (idx + 1) + '.mp3';
+  var btn = event.target;
+  var originalText = btn.textContent;
+  chapterAudio = new Audio(file);
+  chapterAudio.play().catch(function(e) { 
+    alert('فایل صوتی این فصل آپلود نشده است.'); 
+    btn.textContent = originalText;
+  });
+  btn.textContent = '⏸ در حال پخش...';
+  chapterAudio.onended = function() { btn.textContent = originalText; };
+}
+
+/* ===== مدیریت صفحه‌ها ===== */
 function loadState() {
   try { var s = localStorage.getItem(STORAGE_KEY); if (s) return JSON.parse(s); } catch(e) {}
   return { idx: -1, theme: 'light', font: 1, speed: 1.0 };
 }
 function saveState() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ idx: currentIdx, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light', font: currentFont, speed: audio.speed }));
-  } catch(e) {}
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ idx: currentIdx, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light', font: currentFont, speed: audio.speed })); } catch(e) {}
 }
 
-/* ===== صفحهٔ اول با انیمیشن ===== */
 function renderCover() {
   stopAudio();
   currentIdx = -1;
@@ -482,16 +496,23 @@ function renderCover() {
   saveState();
 }
 
-/* ===== صفحهٔ فصل (با نام گردآورنده در انتهای آخرین فصل) ===== */
 function renderChapter(idx) {
   stopAudio();
+  if (chapterAudio) { chapterAudio.pause(); chapterAudio = null; }
   if (idx < 0) { renderCover(); return; }
   if (idx >= CHAPTERS.length) idx = CHAPTERS.length - 1;
   currentIdx = idx;
   var ch = CHAPTERS[idx];
   document.getElementById('topTitle').textContent = ch.title;
+  
   var html = '<h1>' + ch.title + '</h1>';
   if (ch.subtitle) html += '<p style="text-align:center;color:var(--muted);margin-top:-10px;margin-bottom:20px;font-size:12.5px">' + ch.subtitle + '</p>';
+  
+  // دکمهٔ پخش صدا برای همه فصل‌ها
+  if (idx >= 0 && idx < CHAPTERS.length) {
+    html += '<button class="cover-btn" onclick="playChapterAudio(' + idx + ')" style="margin-bottom:20px;background:linear-gradient(135deg,#3498db,#2980b9);max-width:100%">🎧 گوش دادن به این فصل</button>';
+  }
+  
   html += ch.content;
   
   // اگر آخرین فصل بود، نام گردآورنده در پایین اضافه شود
@@ -576,8 +597,9 @@ function toggleTheme() { var isDark = document.documentElement.classList.toggle(
   else { renderCover(); }
   window.addEventListener('beforeunload', function() {
     if (audio.timer) clearTimeout(audio.timer);
+    if (chapterAudio) chapterAudio.pause();
     if (useAndroid && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
-    if (useWeb) window.webkitSpeechSynthesis.cancel();
+    if (useWeb) window.speechSynthesis.cancel();
     saveState();
   });
 })();
