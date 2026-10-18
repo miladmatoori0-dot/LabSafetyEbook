@@ -22,15 +22,30 @@ html.dark{
   --nav-bg:#061410;--nav-text:#e8f5ee;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
-body{font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:var(--font-size);line-height:1.9;transition:background .3s,color .3s;min-height:100vh}
+body{font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:var(--font-size);line-height:1.9;transition:background .3s,color .3s;min-height:100vh;overflow-x:hidden}
 .topbar{position:fixed;top:0;left:0;right:0;height:56px;background:var(--nav-bg);color:var(--nav-text);display:flex;align-items:center;padding:0 8px;gap:6px;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15)}
 .topbar .icon-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);border:none;color:inherit;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s}
 .topbar .icon-btn:active{transform:scale(.88)}
-.topbar .icon-btn.active{background:var(--accent);color:#fff}
 .topbar .title{flex:1;font-size:13px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
 .progress-bar{position:fixed;top:56px;left:0;right:0;height:3px;background:rgba(255,255,255,.1);z-index:99}
 .progress-fill{height:100%;background:var(--accent);width:0;transition:width .2s}
 #app{padding:70px 16px 130px;max-width:700px;margin:0 auto}
+
+/* === انیمیشن‌های پس‌زمینه === */
+.bg-particles {
+  position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+}
+.particle {
+  position: absolute; background: var(--accent); border-radius: 50%; opacity: 0.15;
+  animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+  0% { transform: translateY(100vh) scale(0); opacity: 0; }
+  20% { opacity: 0.2; }
+  80% { opacity: 0.2; }
+  100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+}
+
 #content{animation:fade .3s ease}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 #content h1{font-size:22px;color:var(--accent2);margin:20px 0 12px;padding-bottom:10px;border-bottom:3px solid var(--accent);text-align:center}
@@ -60,27 +75,29 @@ tr:nth-child(even) td{background:var(--card2)}
 .nav-btns button:active{transform:scale(.96)}
 .nav-btns button:disabled{opacity:.4;cursor:not-allowed}
 .nav-btns .primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
-.audio-panel{position:fixed;bottom:56px;left:0;right:0;background:linear-gradient(135deg,var(--nav-bg),#0a2e24);color:#fff;padding:14px 14px 12px;transform:translateY(100%);transition:transform .3s ease;z-index:98;box-shadow:0 -4px 20px rgba(0,0,0,.2);max-height:60vh;overflow-y:auto}
-.audio-panel.open{transform:translateY(0)}
-.audio-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:12px}
-.audio-title{font-weight:bold;color:var(--accent);display:flex;align-items:center;gap:6px}
-.audio-close{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.audio-controls{display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:10px}
-.audio-btn{width:48px;height:48px;border-radius:50%;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .2s}
-.audio-btn:active{transform:scale(.9)}
-.audio-btn.play{background:var(--accent);color:#fff;width:56px;height:56px;font-size:24px}
-.audio-status{text-align:center;font-size:11.5px;color:rgba(255,255,255,.75);margin-bottom:8px;min-height:16px;line-height:1.5}
-.audio-progress{height:3px;background:rgba(255,255,255,.15);border-radius:2px;overflow:hidden;margin-bottom:10px}
-.audio-progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
-.speed-row{display:flex;gap:6px;justify-content:center;font-size:11px}
-.speed-row button{padding:5px 10px;border-radius:12px;background:rgba(255,255,255,.12);border:none;color:#fff;cursor:pointer;font-family:inherit;font-size:11px}
-.speed-row button.active{background:var(--accent);color:#fff;font-weight:bold}
-.tts-help{background:rgba(255,255,255,.1);border-radius:10px;padding:12px;margin-top:10px;font-size:12px;line-height:1.9;color:rgba(255,255,255,.9);display:none}
-.tts-help.show{display:block}
-.tts-help h4{color:var(--accent);margin-bottom:8px;font-size:13px}
-.tts-help ol{padding-right:18px;margin:8px 0}
-.tts-help li{margin:4px 0}
-.tts-help code{background:rgba(0,0,0,.3);padding:2px 6px;border-radius:4px;font-family:monospace;direction:ltr;display:inline-block}
+
+/* === دکمه‌های شناور === */
+.floating-btn {
+  position: fixed; bottom: 80px; left: 20px; width: 48px; height: 48px;
+  border-radius: 50%; background: var(--accent); color: #fff; border: none;
+  box-shadow: 0 6px 20px rgba(46,204,113,0.4); cursor: pointer;
+  display: none; align-items: center; justify-content: center; font-size: 20px;
+  z-index: 95; transition: transform 0.2s;
+}
+.floating-btn:active { transform: scale(0.9); }
+.floating-btn.show { display: flex; }
+.bookmark-btn {
+  position: fixed; bottom: 80px; right: 20px; width: 48px; height: 48px;
+  border-radius: 50%; background: #f39c12; color: #fff; border: none;
+  box-shadow: 0 6px 20px rgba(243,156,18,0.4); cursor: pointer;
+  display: none; align-items: center; justify-content: center; font-size: 20px;
+  z-index: 95; transition: transform 0.2s;
+}
+.bookmark-btn:active { transform: scale(0.9); }
+.bookmark-btn.show { display: flex; }
+.bookmark-btn.saved { background: var(--green); box-shadow: 0 6px 20px rgba(46,204,113,0.4); }
+
+/* === منوی کشویی === */
 .drawer{position:fixed;top:0;right:0;bottom:0;width:300px;max-width:85%;background:var(--card);z-index:200;transform:translateX(100%);transition:transform .3s ease;overflow-y:auto;box-shadow:-10px 0 30px rgba(0,0,0,.3)}
 .drawer.open{transform:translateX(0)}
 .drawer-head{background:var(--nav-bg);color:var(--nav-text);padding:20px 16px;position:sticky;top:0;z-index:1}
@@ -94,6 +111,8 @@ tr:nth-child(even) td{background:var(--card2)}
 .drawer-item.active .num{background:var(--accent);color:#fff}
 .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199;opacity:0;pointer-events:none;transition:opacity .3s}
 .backdrop.open{opacity:1;pointer-events:auto}
+
+/* === جستجو === */
 .search-overlay{position:fixed;inset:0;background:var(--bg);z-index:300;transform:translateY(-100%);transition:transform .3s ease;overflow-y:auto;padding:70px 16px 20px}
 .search-overlay.open{transform:translateY(0)}
 .search-box{flex:1;padding:13px 16px;border-radius:12px;background:var(--card);border:2px solid var(--accent);color:var(--text);font-family:inherit;font-size:14px}
@@ -104,59 +123,73 @@ tr:nth-child(even) td{background:var(--card2)}
 .result-title{font-size:13px;font-weight:bold;color:var(--accent2);margin-bottom:6px}
 .result-snippet{font-size:12.5px;color:var(--muted);line-height:1.7}
 mark{background:rgba(255,183,3,.5);color:inherit;padding:0 2px;border-radius:3px}
+
+/* === صفحهٔ اول === */
 .cover{text-align:center;padding:20px}
-.cover-icon{font-size:72px;margin-bottom:14px;display:block}
-.cover-title{font-size:23px;font-weight:bold;color:var(--accent2);margin-bottom:8px;line-height:1.5}
-.cover-sub{font-size:13px;color:var(--muted);margin-bottom:6px}
-.cover-org{display:inline-block;margin-top:16px;padding:7px 14px;background:var(--card2);color:var(--accent2);border-radius:20px;font-size:12px;font-weight:bold;border:1px solid var(--accent)}
+.animated-cover { position: relative; overflow: hidden; padding-top: 20px; }
 
-/* === انیمیشن‌های صفحهٔ اول === */
-.animated-cover { position: relative; overflow: hidden; padding-top: 30px; }
-@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-12px); } 100% { transform: translateY(0px); } }
-@keyframes glow { 0% { box-shadow: 0 0 10px rgba(46,204,113,0.2); } 50% { box-shadow: 0 0 40px rgba(46,204,113,0.6), 0 0 10px rgba(46,204,113,0.3); } 100% { box-shadow: 0 0 10px rgba(46,204,113,0.2); } }
-@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.glowing-badge {
-  width: 130px; height: 130px; margin: 0 auto 20px;
-  background: radial-gradient(circle, rgba(46,204,113,0.25) 0%, transparent 70%);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  animation: glow 3s infinite ease-in-out;
-  border: 2px solid rgba(46,204,113,0.3);
+/* آیکون‌های شناور */
+.icon-cluster {
+  position: relative; height: 180px; margin: 0 auto 10px; width: 100%;
 }
-.glowing-badge span { font-size: 65px; animation: float 4s infinite ease-in-out; }
-.animated-cover .cover-title { animation: slideUp 0.8s ease-out both; }
-.animated-cover .cover-sub { animation: slideUp 1s ease-out 0.2s both; }
-.animated-cover .cover-org { animation: slideUp 1.1s ease-out 0.4s both; }
-.animated-cover .cover-stats { animation: fadeIn 1.5s ease-out 0.6s both; }
-.animated-cover .cover-desc { animation: slideUp 1.2s ease-out 0.8s both; }
-.animated-cover .cover-btn { animation: slideUp 1.3s ease-out 1s both; }
-.animated-cover .cover-btn:nth-of-type(2) { animation-delay: 1.2s; }
+.float-icon {
+  position: absolute; font-size: 40px; opacity: 0.9;
+  filter: drop-shadow(0 8px 16px rgba(46,204,113,0.3));
+}
+.fi-1 { top: 20px; left: 15%; animation: floatAnim 3s ease-in-out infinite; }
+.fi-2 { top: 60px; right: 15%; animation: floatAnim 4s ease-in-out infinite 0.5s; }
+.fi-3 { top: 100px; left: 25%; animation: floatAnim 3.5s ease-in-out infinite 1s; }
+.fi-4 { top: 10px; right: 30%; animation: floatAnim 4.5s ease-in-out infinite 0.8s; }
+.fi-5 { top: 130px; right: 25%; animation: floatAnim 3.2s ease-in-out infinite 1.2s; }
+.fi-6 { top: 40px; left: 40%; animation: floatAnim 3.8s ease-in-out infinite 0.3s; }
 
-/* === بخش نام گردآورنده (پایین کتاب) === */
+@keyframes floatAnim {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* هاله پالس */
+.pulse-ring {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 120px; height: 120px; border-radius: 50%;
+  border: 2px solid var(--accent); opacity: 0;
+  animation: pulseRing 2.5s ease-out infinite;
+}
+@keyframes pulseRing {
+  0% { width: 100px; height: 100px; opacity: 0.6; }
+  100% { width: 250px; height: 250px; opacity: 0; }
+}
+
+.cover-title{font-size:23px;font-weight:bold;color:var(--accent2);margin-bottom:8px;line-height:1.5; animation: slideUp 0.8s ease-out both;}
+.cover-sub{font-size:13px;color:var(--muted);margin-bottom:6px; animation: slideUp 1s ease-out 0.2s both;}
+.cover-org{display:inline-block;margin-top:16px;padding:7px 14px;background:var(--card2);color:var(--accent2);border-radius:20px;font-size:12px;font-weight:bold;border:1px solid var(--accent); animation: slideUp 1.1s ease-out 0.4s both;}
+
+@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+.cover-stats{display:flex;justify-content:center;gap:12px;margin:20px 0;flex-wrap:wrap; animation: slideUp 1.2s ease-out 0.6s both;}
+.stat-box{background:var(--card);padding:10px 14px;border-radius:12px;box-shadow:var(--shadow);min-width:80px; transition: transform 0.2s;}
+.stat-box:hover { transform: translateY(-3px); }
+.stat-num{font-size:20px;font-weight:bold;color:var(--accent2)}
+.stat-lbl{font-size:10.5px;color:var(--muted);margin-top:4px}
+.cover-desc{margin:24px 0;padding:16px;background:var(--card);border-radius:12px;font-size:13px;color:var(--muted);line-height:1.9;text-align:right;border-right:4px solid var(--accent); animation: slideUp 1.3s ease-out 0.8s both;}
+.cover-btn{display:inline-block;width:100%;max-width:280px;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:bold;font-family:inherit;cursor:pointer;margin-top:8px;box-shadow:0 8px 24px rgba(46,204,113,.3); animation: slideUp 1.4s ease-out 1s both; transition: transform 0.2s;}
+.cover-btn:active{transform:scale(.97)}
+.cover-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(46,204,113,0.4); }
+
+/* === نام گردآورنده (پایین کتاب) === */
 .author-footer {
-  margin-top: 40px;
-  padding: 25px 20px;
+  margin-top: 40px; padding: 25px 20px;
   background: linear-gradient(135deg, var(--card), var(--card2));
-  border-radius: 16px;
-  border: 2px solid var(--accent);
-  text-align: center;
-  box-shadow: var(--shadow);
-  animation: slideUp 1s ease-out both;
+  border-radius: 16px; border: 2px solid var(--accent);
+  text-align: center; box-shadow: var(--shadow);
 }
 .author-footer .label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 8px; letter-spacing: 1px; }
 .author-footer .name { font-size: 18px; font-weight: bold; color: var(--accent2); margin-bottom: 6px; }
 .author-footer .role { font-size: 13px; color: var(--text); line-height: 1.6; }
 .author-footer .org { margin-top: 16px; font-size: 11.5px; color: var(--muted); border-top: 1px dashed var(--border); padding-top: 12px; }
 
-.cover-desc{margin:24px 0;padding:16px;background:var(--card);border-radius:12px;font-size:13px;color:var(--muted);line-height:1.9;text-align:right;border-right:4px solid var(--accent)}
-.cover-btn{display:inline-block;width:100%;max-width:280px;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:bold;font-family:inherit;cursor:pointer;margin-top:8px;box-shadow:0 8px 24px rgba(46,204,113,.3);position:relative;z-index:2}
-.cover-btn:active{transform:scale(.97)}
-.cover-stats{display:flex;justify-content:center;gap:12px;margin:20px 0;flex-wrap:wrap}
-.stat-box{background:var(--card);padding:10px 14px;border-radius:12px;box-shadow:var(--shadow);min-width:80px}
-.stat-num{font-size:20px;font-weight:bold;color:var(--accent2)}
-.stat-lbl{font-size:10.5px;color:var(--muted);margin-top:4px}
+.reading-time { font-size: 11.5px; color: var(--muted); text-align: left; margin-bottom: 16px; display: flex; align-items: center; gap: 5px; }
 .loading{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;line-height:2}
 .spinner{width:40px;height:40px;border:4px solid var(--card2);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -167,11 +200,13 @@ mark{background:rgba(255,183,3,.5);color:inherit;padding:0 2px;border-radius:3px
 </head>
 <body>
 
+<!-- ذرات پس‌زمینه -->
+<div class="bg-particles" id="bgParticles"></div>
+
 <div class="topbar">
   <button class="icon-btn" onclick="openDrawer()" title="فهرست">☰</button>
   <div class="title" id="topTitle">put book HSE</div>
   <button class="icon-btn" onclick="openSearch()" title="جستجو">🔍</button>
-  <button class="icon-btn" onclick="toggleAudio()" id="audioBtn" title="صدا">🔊</button>
   <button class="icon-btn" onclick="toggleTheme()" title="حالت شب" id="themeBtn">🌙</button>
 </div>
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -180,35 +215,9 @@ mark{background:rgba(255,183,3,.5);color:inherit;padding:0 2px;border-radius:3px
   <div id="content"></div>
 </div>
 
-<!-- پنل TTS (اختیاری) -->
-<div class="audio-panel" id="audioPanel">
-  <div class="audio-header">
-    <div class="audio-title">🔊 خواندن صوتی</div>
-    <button class="audio-close" onclick="toggleAudio()">✕</button>
-  </div>
-  <div class="audio-status" id="audioStatus">در حال آماده‌سازی...</div>
-  <div class="audio-progress"><div class="audio-progress-fill" id="audioProgress"></div></div>
-  <div class="audio-controls" id="audioControls" style="display:none">
-    <button class="audio-btn" onclick="restartAudio()" title="از اول">⏮</button>
-    <button class="audio-btn play" onclick="togglePlay()" id="playBtn">▶</button>
-    <button class="audio-btn" onclick="stopAudio()" title="توقف">⏹</button>
-  </div>
-  <div class="speed-row" id="speedRow" style="display:none">
-    <button onclick="setSpeed(0.7)" data-speed="0.7">🐢 آهسته</button>
-    <button onclick="setSpeed(1.0)" data-speed="1.0" class="active">▶ معمولی</button>
-    <button onclick="setSpeed(1.3)" data-speed="1.3">🐇 سریع</button>
-  </div>
-  <div class="tts-help" id="ttsHelp">
-    <h4>⚠️ برای فعال‌کردن صدا:</h4>
-    <ol>
-      <li>برو به <strong>تنظیمات گوشی</strong></li>
-      <li><strong>زبان و ورودی</strong> → <strong>تبدیل متن به گفتار</strong></li>
-      <li>مطمئن شو <strong>Google Text-to-Speech</strong> نصب و فعاله</li>
-      <li>روی <strong>زبان</strong> کلیک کن → <strong>فارسی</strong> رو نصب کن</li>
-      <li>اپ رو ببند و دوباره باز کن</li>
-    </ol>
-  </div>
-</div>
+<!-- دکمه‌های شناور -->
+<button class="floating-btn" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="بازگشت به بالا">⬆️</button>
+<button class="bookmark-btn" id="bookmarkBtn" onclick="toggleBookmark()" title="نشانک‌گذاری">⭐</button>
 
 <div class="nav-btns">
   <button id="prevBtn" onclick="goPrev()">← قبلی</button>
@@ -250,223 +259,44 @@ var CHAPTERS = window.SAFETY_BOOK || [];
 var currentIdx = -1;
 var fontSizeLevels = [14, 16, 18, 20];
 var currentFont = 1;
-var STORAGE_KEY = 'safety_book_state_v9';
+var STORAGE_KEY = 'safety_book_state_v10';
 
-/* ===== TTS ===== */
-var hasAndroidTTS = false;
-var hasWebTTS = ('speechSynthesis' in window) && ('SpeechSynthesisUtterance' in window);
-var ttsAvailable = false;
-var useAndroid = false;
-var useWeb = false;
+// نشانک‌ها
+var bookmarks = [];
+try { var bm = localStorage.getItem('hse_bookmarks'); if (bm) bookmarks = JSON.parse(bm); } catch(e) {}
 
-function checkAndroidTTS() {
-  try {
-    if (typeof AndroidTTS !== 'undefined' && AndroidTTS !== null) {
-      if (typeof AndroidTTS.isAvailable === 'function') hasAndroidTTS = AndroidTTS.isAvailable();
-      else hasAndroidTTS = true;
-    }
-  } catch(e) { hasAndroidTTS = false; }
-}
-
-function updateTTSStatus() {
-  checkAndroidTTS();
-  if (hasAndroidTTS) { useAndroid = true; useWeb = false; ttsAvailable = true; return 'android'; }
-  else if (hasWebTTS) { useAndroid = false; useWeb = true; ttsAvailable = true; return 'web'; }
-  else { useAndroid = false; useWeb = false; ttsAvailable = false; return 'none'; }
-}
-
-var audio = { speaking: false, paused: false, speed: 1.0, chunks: [], currentChunk: 0, timer: null, utterance: null };
-
-function extractReadableText(html) {
-  var tmp = document.createElement('div');
-  tmp.innerHTML = html;
-  var tables = tmp.querySelectorAll('table');
-  for (var i = 0; i < tables.length; i++) tables[i].parentNode.removeChild(tables[i]);
-  return (tmp.textContent || tmp.innerText || '').replace(/\s+/g, ' ').trim();
-}
-
-function splitIntoChunks(text, maxLen) {
-  maxLen = maxLen || 150;
-  var sentences = text.split(/(?<=[.!?؟।])\s+/);
-  var chunks = []; var current = '';
-  for (var i = 0; i < sentences.length; i++) {
-    var s = sentences[i].trim();
-    if (!s) continue;
-    if ((current + ' ' + s).length > maxLen) {
-      if (current) chunks.push(current.trim());
-      if (s.length > maxLen) {
-        var words = s.split(' '); var sub = '';
-        for (var k = 0; k < words.length; k++) {
-          if ((sub + ' ' + words[k]).length > maxLen) {
-            if (sub) chunks.push(sub.trim()); sub = words[k];
-          } else sub = sub ? sub + ' ' + words[k] : words[k];
-        }
-        if (sub) current = sub;
-      } else current = s;
-    } else current = current ? current + ' ' + s : s;
-  }
-  if (current) chunks.push(current.trim());
-  return chunks;
-}
-
-function speakAndroid(text, onEnd) {
-  try {
-    if (typeof AndroidTTS.speak === 'function') AndroidTTS.speak(text);
-    else { if (onEnd) onEnd(); return; }
-  } catch(e) { if (onEnd) onEnd(); return; }
-  audio.timer = setTimeout(function() { if (onEnd && audio.speaking && !audio.paused) onEnd(); }, Math.max(4000, (text.length / (8 * audio.speed)) * 1000 + 2000));
-}
-
-function speakWeb(text, onEnd) {
-  var u = new SpeechSynthesisUtterance(text);
-  u.lang = 'fa-IR'; u.rate = audio.speed; u.pitch = 1.0;
-  u.onend = function() { if (onEnd && audio.speaking && !audio.paused) onEnd(); };
-  u.onerror = function() { if (onEnd && audio.speaking && !audio.paused) onEnd(); };
-  audio.utterance = u; window.speechSynthesis.speak(u);
-}
-
-function speakChunk(text, onEnd) {
-  if (useAndroid) speakAndroid(text, onEnd);
-  else if (useWeb) speakWeb(text, onEnd);
-  else if (onEnd) onEnd();
-}
-
-function startAudio() {
-  var status = updateTTSStatus();
-  if (!ttsAvailable) { showHelp(true); setAudioStatus('❌ خواندن صوتی پشتیبانی نمی‌شود'); return; }
-  if (currentIdx < 0 || currentIdx >= CHAPTERS.length) { setAudioStatus('اول یک فصل را باز کن'); return; }
-  showHelp(false);
-  var ch = CHAPTERS[currentIdx];
-  var text = extractReadableText(ch.content);
-  audio.chunks = splitIntoChunks(text, 150);
-  audio.currentChunk = 0; audio.speaking = true; audio.paused = false;
-  document.getElementById('playBtn').textContent = '⏸';
-  speakCurrent();
-}
-
-function speakCurrent() {
-  if (!audio.speaking || audio.currentChunk >= audio.chunks.length) { finishAudio(); return; }
-  var chunk = audio.chunks[audio.currentChunk];
-  setAudioStatus('در حال خواندن... (' + Math.round((audio.currentChunk / audio.chunks.length) * 100) + '٪)');
-  updateAudioProgress();
-  speakChunk(chunk, function() {
-    if (!audio.speaking || audio.paused) return;
-    audio.currentChunk++; speakCurrent();
-  });
-}
-
-function togglePlay() {
-  if (!ttsAvailable) { startAudio(); return; }
-  if (audio.chunks.length === 0) { startAudio(); return; }
-  if (audio.speaking && !audio.paused) {
-    audio.paused = true;
-    if (audio.timer) clearTimeout(audio.timer);
-    if (useAndroid && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
-    if (useWeb) window.speechSynthesis.pause();
-    setAudioStatus('⏸ متوقف'); document.getElementById('playBtn').textContent = '▶';
-  } else if (audio.paused) {
-    audio.paused = false; audio.speaking = true;
-    document.getElementById('playBtn').textContent = '⏸';
-    speakCurrent();
+// === ذرات پس‌زمینه ===
+function createParticles() {
+  var container = document.getElementById('bgParticles');
+  for (var i = 0; i < 20; i++) {
+    var p = document.createElement('div');
+    p.className = 'particle';
+    var size = Math.random() * 8 + 4;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (Math.random() * 10 + 10) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    container.appendChild(p);
   }
 }
 
-function stopAudio() {
-  audio.speaking = false; audio.paused = false; audio.chunks = []; audio.currentChunk = 0;
-  if (audio.timer) clearTimeout(audio.timer);
-  if (useAndroid && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
-  if (useWeb) window.speechSynthesis.cancel();
-  setAudioStatus('برای شروع، دکمهٔ پخش را بزنید');
-  var btn = document.getElementById('playBtn'); if (btn) btn.textContent = '▶';
-  document.getElementById('audioProgress').style.width = '0%';
-}
-
-function restartAudio() { stopAudio(); setTimeout(startAudio, 300); }
-function finishAudio() { audio.speaking = false; audio.paused = false; document.getElementById('playBtn').textContent = '▶'; setAudioStatus('✅ پایان فصل'); }
-
-function setSpeed(s) {
-  audio.speed = s;
-  var btns = document.querySelectorAll('.speed-row button');
-  for (var i = 0; i < btns.length; i++) {
-    btns[i].classList.remove('active');
-    if (parseFloat(btns[i].getAttribute('data-speed')) === s) btns[i].classList.add('active');
-  }
-  if (useAndroid && AndroidTTS.setRate) { try { AndroidTTS.setRate(s); } catch(e) {} }
-  if (audio.speaking && !audio.paused) {
-    var wasChunk = audio.currentChunk;
-    if (audio.timer) clearTimeout(audio.timer);
-    if (useAndroid && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
-    if (useWeb) window.speechSynthesis.cancel();
-    audio.currentChunk = wasChunk; setTimeout(speakCurrent, 200);
-  }
-}
-
-function toggleAudio() {
-  var panel = document.getElementById('audioPanel');
-  var btn = document.getElementById('audioBtn');
-  var open = panel.classList.toggle('open');
-  btn.classList.toggle('active', open);
-  if (open) {
-    var status = updateTTSStatus();
-    if (status === 'none') {
-      showHelp(true); setAudioStatus('❌ خواندن صوتی پشتیبانی نمی‌شود');
-      document.getElementById('audioControls').style.display = 'none';
-      document.getElementById('speedRow').style.display = 'none';
-    } else {
-      showHelp(false); setAudioStatus('برای شروع، دکمهٔ پخش را بزنید');
-      document.getElementById('audioControls').style.display = 'flex';
-      document.getElementById('speedRow').style.display = 'flex';
-    }
-  } else stopAudio();
-}
-
-function showHelp(show) { var el = document.getElementById('ttsHelp'); if (el) { if (show) el.classList.add('show'); else el.classList.remove('show'); } }
-function updateAudioProgress() { if (audio.chunks.length === 0) return; document.getElementById('audioProgress').style.width = ((audio.currentChunk / audio.chunks.length) * 100) + '%'; }
-function setAudioStatus(msg) { var el = document.getElementById('audioStatus'); if (el) el.textContent = msg; }
-
-/* ===== پخش فایل‌های MP3 ===== */
-var chapterAudio = null;
-
-function playIntro() {
-  if (chapterAudio) { chapterAudio.pause(); chapterAudio = null; }
-  var btn = event.target;
-  var originalText = btn.textContent;
-  chapterAudio = new Audio('intro.mp3');
-  chapterAudio.play().catch(function(e) { alert('خطا در پخش صدا: ' + e.message); });
-  btn.textContent = '⏸ در حال پخش...';
-  chapterAudio.onended = function() { btn.textContent = originalText; };
-}
-
-function playChapterAudio(idx) {
-  if (chapterAudio) { chapterAudio.pause(); chapterAudio = null; }
-  var file = 'chapter' + (idx + 1) + '.mp3';
-  var btn = event.target;
-  var originalText = btn.textContent;
-  chapterAudio = new Audio(file);
-  chapterAudio.play().catch(function(e) { 
-    alert('فایل صوتی این فصل آپلود نشده است.'); 
-    btn.textContent = originalText;
-  });
-  btn.textContent = '⏸ در حال پخش...';
-  chapterAudio.onended = function() { btn.textContent = originalText; };
-}
-
-/* ===== مدیریت صفحه‌ها ===== */
-function loadState() {
-  try { var s = localStorage.getItem(STORAGE_KEY); if (s) return JSON.parse(s); } catch(e) {}
-  return { idx: -1, theme: 'light', font: 1, speed: 1.0 };
-}
-function saveState() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ idx: currentIdx, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light', font: currentFont, speed: audio.speed })); } catch(e) {}
-}
-
+// === مدیریت صفحه‌ها ===
 function renderCover() {
-  stopAudio();
   currentIdx = -1;
   document.getElementById('topTitle').textContent = 'put book HSE';
+  document.getElementById('bookmarkBtn').classList.remove('show');
   document.getElementById('content').innerHTML =
     '<div class="cover animated-cover">' +
-      '<div class="glowing-badge"><span>🦺</span></div>' +
+      '<div class="icon-cluster">' +
+        '<div class="pulse-ring"></div>' +
+        '<div class="float-icon fi-1">⛑️</div>' +
+        '<div class="float-icon fi-2">⚙️</div>' +
+        '<div class="float-icon fi-3">🧪</div>' +
+        '<div class="float-icon fi-4">🛡️</div>' +
+        '<div class="float-icon fi-5">🔥</div>' +
+        '<div class="float-icon fi-6">⚠️</div>' +
+      '</div>' +
       '<div class="cover-title">ایمنی در آزمایشگاه‌های نفت</div>' +
       '<div class="cover-sub">دستورالعمل‌های کاربردی در مراکز تحقیقاتی و آزمایشگاهی</div>' +
       '<div class="cover-org">🎓 دانشکده نفت اهواز — واحد HSE</div>' +
@@ -483,7 +313,6 @@ function renderCover() {
         'ایمنی مواد شیمیایی پرکاربرد، و نکات حیاتی کار با کپسول‌های گاز تحت فشار.' +
       '</div>' +
       '<button class="cover-btn" onclick="goToChapter(0)">📖 شروع مطالعه</button>' +
-      '<button class="cover-btn" onclick="playIntro()" style="background:linear-gradient(135deg,#3498db,#2980b9);margin-top:8px">🎧 گوش دادن به معرفی کتاب</button>' +
       '<div style="margin-top:26px;font-size:11px;color:var(--muted);line-height:1.9">' +
         'تهیه‌شده برای: دانشجویان و پژوهشگران دانشگاهی<br>' +
         'تمامی حقوق مادی و معنوی متعلق به دانشکده نفت اهواز می‌باشد.' +
@@ -497,25 +326,23 @@ function renderCover() {
 }
 
 function renderChapter(idx) {
-  stopAudio();
-  if (chapterAudio) { chapterAudio.pause(); chapterAudio = null; }
   if (idx < 0) { renderCover(); return; }
   if (idx >= CHAPTERS.length) idx = CHAPTERS.length - 1;
   currentIdx = idx;
   var ch = CHAPTERS[idx];
   document.getElementById('topTitle').textContent = ch.title;
   
+  // محاسبه زمان مطالعه (حدود ۲۰۰ کلمه در دقیقه)
+  var wordCount = ch.content.replace(/<[^>]*>/g, '').split(/\s+/).length;
+  var readTime = Math.ceil(wordCount / 200);
+  
   var html = '<h1>' + ch.title + '</h1>';
   if (ch.subtitle) html += '<p style="text-align:center;color:var(--muted);margin-top:-10px;margin-bottom:20px;font-size:12.5px">' + ch.subtitle + '</p>';
   
-  // دکمهٔ پخش صدا برای همه فصل‌ها
-  if (idx >= 0 && idx < CHAPTERS.length) {
-    html += '<button class="cover-btn" onclick="playChapterAudio(' + idx + ')" style="margin-bottom:20px;background:linear-gradient(135deg,#3498db,#2980b9);max-width:100%">🎧 گوش دادن به این فصل</button>';
-  }
+  html += '<div class="reading-time">⏱️ حدود ' + readTime + ' دقیقه مطالعه</div>';
   
   html += ch.content;
   
-  // اگر آخرین فصل بود، نام گردآورنده در پایین اضافه شود
   if (idx === CHAPTERS.length - 1) {
     html += '<div class="author-footer">' +
               '<span class="label">گردآورنده</span>' +
@@ -529,9 +356,38 @@ function renderChapter(idx) {
   document.getElementById('prevBtn').disabled = false;
   document.getElementById('nextBtn').disabled = (idx >= CHAPTERS.length - 1);
   document.getElementById('progressFill').style.width = ((idx + 1) / CHAPTERS.length * 100) + '%';
+  
+  // بررسی نشانک
+  updateBookmarkUI();
+  document.getElementById('bookmarkBtn').classList.add('show');
+  
   updateDrawer();
   window.scrollTo(0, 0);
   saveState();
+}
+
+function updateBookmarkUI() {
+  var btn = document.getElementById('bookmarkBtn');
+  if (bookmarks.includes(currentIdx)) {
+    btn.classList.add('saved');
+    btn.textContent = '⭐';
+  } else {
+    btn.classList.remove('saved');
+    btn.textContent = '☆';
+  }
+}
+
+function toggleBookmark() {
+  if (currentIdx < 0) return;
+  var i = bookmarks.indexOf(currentIdx);
+  if (i >= 0) {
+    bookmarks.splice(i, 1);
+  } else {
+    bookmarks.push(currentIdx);
+  }
+  try { localStorage.setItem('hse_bookmarks', JSON.stringify(bookmarks)); } catch(e) {}
+  updateBookmarkUI();
+  updateDrawer();
 }
 
 function goToChapter(idx) { renderChapter(idx); closeDrawer(); closeSearch(); }
@@ -540,16 +396,22 @@ function goPrev() { if (currentIdx === 0) renderCover(); else if (currentIdx > 0
 
 function buildDrawerList() {
   var html = '<div class="drawer-item" onclick="goToChapter(-1)" data-idx="-1"><span class="num">🏠</span> معرفی کتاب</div>';
-  for (var i = 0; i < CHAPTERS.length; i++) html += '<div class="drawer-item" onclick="goToChapter(' + i + ')" data-idx="' + i + '"><span class="num">' + (i + 1) + '</span> ' + CHAPTERS[i].title + '</div>';
+  for (var i = 0; i < CHAPTERS.length; i++) {
+    var star = bookmarks.includes(i) ? ' ⭐' : '';
+    html += '<div class="drawer-item" onclick="goToChapter(' + i + ')" data-idx="' + i + '"><span class="num">' + (i + 1) + '</span> ' + CHAPTERS[i].title + star + '</div>';
+  }
   document.getElementById('drawerList').innerHTML = html;
 }
+
 function updateDrawer() {
+  buildDrawerList(); // بازسازی منو برای نمایش ستاره‌ها
   var items = document.querySelectorAll('.drawer-item');
   for (var i = 0; i < items.length; i++) {
     items[i].classList.remove('active');
     if (parseInt(items[i].getAttribute('data-idx')) === currentIdx) items[i].classList.add('active');
   }
 }
+
 function openDrawer() { document.getElementById('drawer').classList.add('open'); document.getElementById('backdrop').classList.add('open'); }
 function closeDrawer() { document.getElementById('drawer').classList.remove('open'); document.getElementById('backdrop').classList.remove('open'); }
 
@@ -580,28 +442,39 @@ function doSearch(query) {
 function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function toggleTheme() { var isDark = document.documentElement.classList.toggle('dark'); document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙'; saveState(); }
 
+// === مدیریت اسکرول ===
+window.addEventListener('scroll', function() {
+  var btn = document.getElementById('backToTop');
+  if (window.scrollY > 400) {
+    btn.classList.add('show');
+  } else {
+    btn.classList.remove('show');
+  }
+});
+
+// === ذخیره وضعیت ===
+function loadState() {
+  try { var s = localStorage.getItem(STORAGE_KEY); if (s) return JSON.parse(s); } catch(e) {}
+  return { idx: -1, theme: 'light', font: 1 };
+}
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ idx: currentIdx, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light', font: currentFont })); } catch(e) {}
+}
+
 (function init() {
   var s = loadState();
   if (s.theme === 'dark') { document.documentElement.classList.add('dark'); setTimeout(function(){ document.getElementById('themeBtn').textContent = '☀️'; }, 0); }
   if (s.font !== undefined && s.font !== 1) { currentFont = s.font; document.documentElement.style.setProperty('--font-size', fontSizeLevels[currentFont] + 'px'); }
-  if (s.speed) audio.speed = s.speed;
+  
+  createParticles();
   buildDrawerList();
-  setTimeout(function() {
-    updateTTSStatus();
-    var btn = document.getElementById('audioBtn');
-    if (btn) btn.style.opacity = (hasAndroidTTS || hasWebTTS) ? '1' : '0.4';
-  }, 1500);
+  
   if (CHAPTERS.length === 0) {
     document.getElementById('content').innerHTML = '<div class="loading"><div class="spinner"></div>در حال بارگذاری محتوا...</div>';
   } else if (s.idx >= 0 && s.idx < CHAPTERS.length) { renderChapter(s.idx); }
   else { renderCover(); }
-  window.addEventListener('beforeunload', function() {
-    if (audio.timer) clearTimeout(audio.timer);
-    if (chapterAudio) chapterAudio.pause();
-    if (useAndroid && AndroidTTS.stop) { try { AndroidTTS.stop(); } catch(e) {} }
-    if (useWeb) window.speechSynthesis.cancel();
-    saveState();
-  });
+  
+  window.addEventListener('beforeunload', saveState);
 })();
 </script>
 </body>
