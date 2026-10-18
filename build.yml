@@ -38,6 +38,10 @@ jobs:
           cp chapters10.js oilquiz/src/main/assets/chapters10.js
           cp espeak-ng.js oilquiz/src/main/assets/espeak-ng.js
           cp espeak-ng.data oilquiz/src/main/assets/espeak-ng.data
+          
+          # === کپی همه فایل‌های MP3 (هوشمند) ===
+          cp *.mp3 oilquiz/src/main/assets/ || echo "No MP3 files found"
+          
           cp AndroidManifest.xml oilquiz/src/main/AndroidManifest.xml
           cp MainActivity.java oilquiz/src/main/java/com/ahvaz/safetybook/MainActivity.java
           cp activity_main.xml oilquiz/src/main/res/layout/activity_main.xml
